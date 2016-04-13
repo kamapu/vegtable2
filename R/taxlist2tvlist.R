@@ -23,21 +23,23 @@ get_code <- function(x) {
 }
 
 # The function
-vegtable2tvlist <- function(taxlist, ecodbase=TRUE) {
+taxlist2tvlist <- function(taxlist, ecodbase=TRUE) {
     if(class(taxlist) != "taxlist")
         stop("'taxlist' have to be of class 'taxlist'", call.=FALSE)
     if(ecodbase & ncol(taxlist@taxonTraits) > 1)
         Traits <- taxlist@taxonTraits else Traits <- NULL
     # Add synonyms
-    taxlist@taxonNames$SYNONYM <- taxlist@taxonNames$TaxonConceptID %in%
-            taxlist@taxonRelations$ValidName
-    # Change taxlist
-    taxlist <- taxlist@taxonNames
-    # Additional standard columns
-    taxlist$SHORTNAME <- substr(taxlist$TaxonName, 1, 22)
-    taxlist$NATIVENAME <- ""
-    taxlist$LETTERCODE <- get_code(taxlist$TaxonName)
+    taxlist@taxonNames$SYNONYM <- !taxlist@taxonNames$TaxonUsageID %in%
+            taxlist@taxonRelations$AcceptedName
+    taxlist@taxonNames$SHORTNAME <- substr(taxlist@taxonNames$TaxonName, 1, 22)
+    taxlist@taxonNames$NATIVENAME <- ""
+    LETTERCODE <- get_code(taxlist@taxonNames[
+                    paste(taxlist@taxonRelations$AcceptedName),"TaxonName"])
+    taxlist@taxonNames$LETTERCODE <- LETTERCODE[
+            match(taxlist@taxonNames$TaxonConceptID,
+                    taxlist@taxonRelations$AcceptedName)]
     # Final version
+    taxlist <- taxlist@taxonNames
     colnames(taxlist) <- TCS.replace2.back(colnames(taxlist))
     Head <- c("SPECIES_NR","LETTERCODE","SHORTNAME","ABBREVIAT","NATIVENAME",
             "AUTHOR","SYNONYM","VALID_NR")

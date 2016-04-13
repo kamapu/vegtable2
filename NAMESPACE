@@ -7,5 +7,5 @@ import(
 
 ## Export of regular function names
 export(
-	vegtable2tvlist
+	taxlist2tvlist
 )
