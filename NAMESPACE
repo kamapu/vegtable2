@@ -7,5 +7,6 @@ import(
 
 ## Export of regular function names
 export(
-	taxlist2tvlist
+	taxlist2tvlist,
+	clone
 )
