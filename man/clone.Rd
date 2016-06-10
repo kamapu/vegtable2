@@ -38,4 +38,5 @@ Miguel Alvarez, \email{malvarez@uni-bonn.de}.
 }
 \examples{
 ## Add example for this function
+## unzip(file, exdir=tv.home())
 }
