@@ -10,3 +10,8 @@ export(
 	clone,
 	taxlist2tvlist
 )
+
+## Export of methods
+exportMethods(
+	df2sp
+)

@@ -12,6 +12,8 @@ Depends:
 	vegdata
 Imports:
 	foreign,
+	rgdal,
+	sp,
 	vegdata
 Suggests:
 	devtools
