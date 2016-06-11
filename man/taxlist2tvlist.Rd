@@ -30,19 +30,5 @@ Miguel Alvarez, \email{malvarez@uni-bonn.de}
 \code{\link[=taxlist-class]{taxlist}}, \code{\link{tvsplist}}.
 }
 \examples{
-library(taxlist)
-data(conosur_splist)
-
-# Example with the genus Weinmannia
-Splist <- subset(conosur_splist, Traits=genus == "Weinmannia")
-Splist <- taxlist2tvlist(Splist)
-
-# Without ecodbase
-Splist <- subset(conosur_splist, Traits=genus == "Weinmannia")
-Splist <- taxlist2tvlist(Splist, ecodbase=FALSE)
-
-# Object with missing traits
-Splist <- subset(conosur_splist, Traits=genus == "Weinmannia")
-Splist@taxonTraits <- Splist@taxonTraits[,1,drop=FALSE]
-Splist <- taxlist2tvlist(Splist)
+## No example
 }
