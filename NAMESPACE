@@ -2,7 +2,7 @@
 import(
 	taxlist,
 	vegdata,
-	vegtables
+	vegtable
 )
 
 ## Export of regular function names
