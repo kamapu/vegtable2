@@ -33,11 +33,14 @@ taxlist2tvlist <- function(taxlist, ecodbase=TRUE) {
             taxlist@taxonRelations$AcceptedName
     taxlist@taxonNames$SHORTNAME <- substr(taxlist@taxonNames$TaxonName, 1, 22)
     taxlist@taxonNames$NATIVENAME <- ""
-    LETTERCODE <- get_code(taxlist@taxonNames[
-                    paste(taxlist@taxonRelations$AcceptedName),"TaxonName"])
+    # LETTERCODE in many steps
+    LETTERCODE <- taxlist@taxonRelations[,c("TaxonConceptID","AcceptedName")]
+    LETTERCODE$AcceptedName <- taxlist@taxonNames[match(LETTERCODE$AcceptedName,
+                    taxlist@taxonNames$TaxonUsageID),"TaxonName"]
+    LETTERCODE$LETTERCODE <- get_code(LETTERCODE$AcceptedName)
     taxlist@taxonNames$LETTERCODE <- LETTERCODE[
-            match(taxlist@taxonNames$TaxonConceptID,
-                    taxlist@taxonRelations$AcceptedName)]
+            match(taxlist@taxonNames$TaxonConceptID, LETTERCODE$TaxonConceptID),
+            "LETTERCODE"]
     # Final version
     taxlist <- taxlist@taxonNames
     colnames(taxlist) <- TCS.replace2.back(colnames(taxlist))
