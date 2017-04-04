@@ -19,16 +19,13 @@ taxlist2tvlist(taxlist, ecodbase=TRUE)
 This function basically export the slots \code{taxonNames} and
 \code{taxonTraits}, adpats the respective column names to Turboveg, and
 generates automatically some fields that are usually not requested in
-\code{\link[=taxlist-class]{taxlist}} objects.
+\code{\linkS4class{taxlist}} objects.
 
-Names belonging to a same concept get a common \code{LETTERCODE}.
+Names belonging to a same concept get a common \code{'LETTERCODE'}.
 }
 \author{
 Miguel Alvarez, \email{malvarez@uni-bonn.de}
 }
 \seealso{
-\code{\link[=taxlist-class]{taxlist}}, \code{\link{tvsplist}}.
-}
-\examples{
-## No example
+\code{\linkS4class{taxlist}}, \code{\link[taxlist]{tv2taxlist}}.
 }

@@ -1,3 +1,7 @@
+## Import functions
+importFrom("foreign", "read.dbf")
+importFrom("utils", "data", "zip")
+
 ## Import of packages
 import(
 	taxlist,
@@ -8,5 +12,6 @@ import(
 ## Export of regular function names
 export(
 	clone,
-	taxlist2tvlist
+	taxlist2tvlist,
+	swea_import
 )

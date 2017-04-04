@@ -1,12 +1,13 @@
 Package: vegtable2
-Version: 0.0.0.9004
+Version: 0.0.0.9005
 Encoding: UTF-8
-Date: 2017-03-04
+Date: 2017-04-04
 Title: Handling Vegetation Data Sets
 Author: Miguel Alvarez <malvarez@uni-bonn.de>
 Maintainer: Miguel Alvarez <malvarez@uni-bonn.de>
 Depends:
-	R(>= 3.1.0),
+	R(>= 3.0.0),
+	foreign,
 	taxlist,
 	vegtable,
 	vegdata
@@ -16,3 +17,6 @@ Description: Extension of 'taxlist' and 'vegtable' for internal purposes.
 License: GPL (>= 2)
 URL: https://github.com/kamapu/vegtable
 BugReports: https://github.com/kamapu/vegtable/issues
+Collate:
+	'NULLing.R'
+	'clone.R''swea_import.R''taxlist2tvlist.R'
