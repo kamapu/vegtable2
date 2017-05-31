@@ -3,7 +3,7 @@
 # Author: Miguel Alvarez
 ################################################################################
 
-swea_import <- function(db, ...) {
+swea_import <- function(db="Sweadataveg", ...) {
     x <- tv2vegtable(db, ...)
     # 1: Modify presence-absence
     new_pa <- rep(1, nrow(x@samples))
