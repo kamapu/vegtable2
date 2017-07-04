@@ -8,7 +8,7 @@ This function performs a personalized import for the database
 This is a wrapper for \code{\link[vegtable]{tv2vegtable}}.
 }
 \usage{
-swea_import(db, ...)
+swea_import(db="Sweadataveg", ...)
 }
 \arguments{
 \item{db}{Name of the database as character value.}
