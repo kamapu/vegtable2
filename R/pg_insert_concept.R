@@ -4,7 +4,7 @@
 ################################################################################
 
 pg_insert_concept <- function(conn, df, schema) {
-	if(!c("TaxonName","AuthorName") %in% colnames(df))
+	if(any(!c("TaxonName","AuthorName") %in% colnames(df)))
 		stop("Columns 'TaxonName' and 'AuthorName' are mandatory in argument 'df'.")
 	# 1: Extract concept and usage IDs
 	query <- paste0(
@@ -38,10 +38,10 @@ FROM
 WHERE
 	table_name = 'taxonRelations';")
 	# 2: Insert to database
-	pgInsert(conn, c(schema, "taxonRelations"),
-			df[,colnames(df) %in% taxon_relations[,1]])
 	pgInsert(conn, c(schema, "taxonNames"),
 			df[,colnames(df) %in% taxon_names[,1]])
+	pgInsert(conn, c(schema, "taxonRelations"),
+			df[,colnames(df) %in% taxon_relations[,1]])
 	pgInsert(conn, c(schema, "names2concepts"),
 			data.frame(df[,c("TaxonUsageID", "TaxonConceptID")],
 					NameStatus="accepted", stringsAsFactors=FALSE))
