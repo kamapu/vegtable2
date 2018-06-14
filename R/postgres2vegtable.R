@@ -9,7 +9,6 @@ postgres2vegtable <- function(conn, header_schema, species_schema,
 	# Import taxonomic tables
 	if(missing(species_schema)) species_schema <- header_schema
 	species_obj <- list()
-	
 	for(i in c("taxonNames","names2concepts","taxonRelations","taxonViews",
 			"taxonLevels","taxonTraits")) {
 		species_obj[[i]] <- dbReadDataFrame(conn=conn,
@@ -33,7 +32,6 @@ postgres2vegtable <- function(conn, header_schema, species_schema,
 			new("taxlist", taxonNames=taxonNames, taxonRelations=taxonRelations,
 					taxonViews=taxonViews, taxonTraits=taxonTraits))
 	# Header data
-	if(missing(header_schema)) header_schema <- species_schema
 	header <- dbReadDataFrame(conn=conn, name=c(header_schema, "header"))
 	if(!missing(geometry)) 
 		header <- data.frame(header[,colnames(header) != geometry],
