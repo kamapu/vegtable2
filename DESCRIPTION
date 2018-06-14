@@ -24,6 +24,7 @@ BugReports: https://github.com/kamapu/vegtable/issues
 Collate:
 	'NULLing.R'
 	'clone.R'
-	'postgres2vegtable.R'
 	'swea_import.R'
 	'taxlist2tvlist.R'
+	'postgres2vegtable.R'
+	'pg_insert_name.R'

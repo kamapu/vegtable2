@@ -1,7 +1,7 @@
 \name{taxlist2tvlist}
 \alias{taxlist2tvlist}
 
-\title{Convert 'taxlist' Objects to Turboveg-Format.}
+\title{Convert 'taxlist' Objects to Turboveg-Format}
 \description{
 This is a function converting \code{\link[=taxlist-class]{taxlist}} objects to a
 'Turboveg-like' format.
