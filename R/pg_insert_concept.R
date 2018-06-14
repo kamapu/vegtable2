@@ -6,6 +6,8 @@
 pg_insert_concept <- function(conn, df, schema) {
 	if(any(!c("TaxonName","AuthorName") %in% colnames(df)))
 		stop("Columns 'TaxonName' and 'AuthorName' are mandatory in argument 'df'.")
+	if("TaxonConceptID" %in% colnames(df))
+		stop("Column 'TaxonConceptID' detected in 'df'. Use 'pg_insert_name' instead?")
 	# 1: Extract concept and usage IDs
 	query <- paste0(
 "SELECT 
