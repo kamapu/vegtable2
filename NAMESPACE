@@ -1,6 +1,9 @@
 ## Import functions
-importFrom("foreign", "read.dbf")
-importFrom("utils", "data", "zip")
+importFrom(foreign, read.dbf)
+importFrom(utils, data, zip)
+importFrom(DBI, dbConnect, dbGetQuery)
+importFrom(rpostgis, dbReadDataFrame)
+importFrom(methods, new)
 
 ## Import of packages
 import(
@@ -12,6 +15,7 @@ import(
 ## Export of regular function names
 export(
 	clone,
+	postgres2vegtable,
 	taxlist2tvlist,
 	swea_import
 )
