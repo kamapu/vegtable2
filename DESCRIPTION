@@ -27,4 +27,5 @@ Collate:
 	'swea_import.R'
 	'taxlist2tvlist.R'
 	'postgres2vegtable.R'
+	'pg_insert_concept.R'
 	'pg_insert_name.R'

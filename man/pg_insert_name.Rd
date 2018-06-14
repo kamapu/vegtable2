@@ -1,12 +1,15 @@
-\name{pg_insert_name}
+\name{pg_insert_concept}
+\alias{pg_insert_concept}
 \alias{pg_insert_name}
 
-\title{Insert new names in PostgreSQL taxonomic lists}
+\title{Insert Names or Concepts in PostgreSQL Taxonomic Lists}
 \description{
 Insert synonyms to existing taxa in a PostgreSQL version of
 \code{\linkS4class{taxlist}} objects.
 }
 \usage{
+pg_insert_name(conn, df, schema)
+
 pg_insert_name(conn, df, schema)
 }
 \arguments{

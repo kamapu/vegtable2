@@ -14,25 +14,17 @@ FROM
 	\"", schema, "\".\"taxonNames\";")
 	TaxonUsageID <- dbGetQuery(conn, query)
 	df$TaxonUsageID <- max(TaxonUsageID) + c(1:nrow(df))
+	taxon_names <- dbGetQuery(conn,
+"SELECT
+	column_name
+FROM
+	information_schema.columns
+WHERE
+	table_name = 'taxonNames';")
 	# 2: Insert to database
 	pgInsert(conn, c(schema, "taxonNames"),
-			df[,colnames(df) != "TaxonConceptID"])
+			df[,colnames(df) %in% taxon_names[,1]])
 	pgInsert(conn, c(schema, "names2concepts"),
 			data.frame(df[,c("TaxonUsageID", "TaxonConceptID")],
 					NameStatus="synonym", stringsAsFactors=FALSE))
 }
-
-
-
-
-
-
-
-
-
-
-
-
-setwd("M:/WorkspaceR/vegtable2")
-
-
