@@ -17,6 +17,7 @@ export(
 	clone,
 	pg_insert_concept,
 	pg_insert_name,
+	postgres2taxlist,
 	postgres2vegtable,
 	taxlist2tvlist,
 	swea_import

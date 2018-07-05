@@ -8,29 +8,7 @@ postgres2vegtable <- function(conn, header_schema, species_schema,
 		cover_names, geometry, description) {
 	# Import taxonomic tables
 	if(missing(species_schema)) species_schema <- header_schema
-	species_obj <- list()
-	for(i in c("taxonNames","names2concepts","taxonRelations","taxonViews",
-			"taxonLevels","taxonTraits")) {
-		species_obj[[i]] <- dbReadDataFrame(conn=conn,
-				name=c(species_schema, i))
-	}
-	# Format for taxlist
-	species_obj$taxonRelations$Level <- with(species_obj$taxonLevels,
-			factor(species_obj$taxonRelations$Level, Level[order(rank)]))
-	species_obj$taxonNames$TaxonConceptID <- with(species_obj$names2concepts,
-			TaxonConceptID[match(species_obj$taxonNames$TaxonUsageID,
-							TaxonUsageID)])
-	species_obj$taxonRelations$Basionym <- with(species_obj$names2concepts[
-					species_obj$names2concepts$NameStatus == "basionym",],
-			TaxonUsageID[match(species_obj$taxonRelations$TaxonConceptID,
-							TaxonConceptID)])
-	species_obj$taxonRelations$AcceptedName <- with(species_obj$names2concepts[
-					species_obj$names2concepts$NameStatus == "accepted",],
-			TaxonUsageID[match(species_obj$taxonRelations$TaxonConceptID,
-							TaxonConceptID)])
-	species_obj <- with(species_obj,
-			new("taxlist", taxonNames=taxonNames, taxonRelations=taxonRelations,
-					taxonViews=taxonViews, taxonTraits=taxonTraits))
+	species_obj <- postgres2taxlist(conn, species_schema)
 	# Header data
 	header <- dbReadDataFrame(conn=conn, name=c(header_schema, "header"))
 	if(!missing(geometry)) 
