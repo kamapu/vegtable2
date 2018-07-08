@@ -53,9 +53,11 @@ WHERE
 					".\"taxonNames\";"))[,1]
 	query <- paste0("alter sequence sudamerica.taxon_usage_id restart with ",
 			next_usage, ";")
+	dbSendQuery(conn, query)
 	next_concept <- dbGetQuery(conn,
 			paste0("select max(\"TaxonConceptID\") + 1 from ", schema,
 					".\"taxonRelations\";"))[,1]
 	query <- paste0("alter sequence sudamerica.taxon_concept_id restart with ",
 			next_concept, ";")
+	dbSendQuery(conn, query)
 }
