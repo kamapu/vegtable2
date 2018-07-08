@@ -8,7 +8,7 @@ Insert synonyms to existing taxa in a PostgreSQL version of
 \code{\linkS4class{taxlist}} objects.
 }
 \usage{
-pg_insert_name(conn, df, schema)
+pg_insert_concept(conn, df, schema)
 
 pg_insert_name(conn, df, schema)
 }
