@@ -27,7 +27,10 @@ postgres2taxlist <- function(conn, schema) {
 	if(ncol(species_obj$taxonTraits) == 0)
 		species_obj$taxonTraits <- data.frame(TaxonConceptID=integer())
 	species_obj <- with(species_obj,
-			new("taxlist", taxonNames=taxonNames, taxonRelations=taxonRelations,
-					taxonViews=taxonViews, taxonTraits=taxonTraits))
+			new("taxlist",
+					taxonNames=clean_strings(taxonNames),
+					taxonRelations=clean_strings(taxonRelations),
+					taxonViews=clean_strings(taxonViews),
+					taxonTraits=clean_strings(taxonTraits)))
 	return(species_obj)
 }
