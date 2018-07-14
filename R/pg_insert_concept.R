@@ -3,7 +3,7 @@
 # Author: Miguel Alvarez
 ################################################################################
 
-pg_insert_concept <- function(conn, df, schema) {
+pg_insert_concept <- function(conn, schema, df) {
 	if(any(!c("TaxonName","AuthorName") %in% colnames(df)))
 		stop("Columns 'TaxonName' and 'AuthorName' are mandatory in argument 'df'.")
 	if("TaxonConceptID" %in% colnames(df))
@@ -60,4 +60,5 @@ WHERE
 	query <- paste0("alter sequence sudamerica.taxon_concept_id restart with ",
 			next_concept, ";")
 	dbSendQuery(conn, query)
+	message("DONE")
 }

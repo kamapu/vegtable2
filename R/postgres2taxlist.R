@@ -33,4 +33,5 @@ postgres2taxlist <- function(conn, schema) {
 					taxonViews=clean_strings(taxonViews),
 					taxonTraits=clean_strings(taxonTraits)))
 	return(species_obj)
+	message("DONE")
 }

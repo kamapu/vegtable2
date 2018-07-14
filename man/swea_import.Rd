@@ -28,7 +28,7 @@ The slot \code{'coverconvert'} will be replaced by
 A \code{\linkS4class{vegtable}} object.
 }
 \author{
-Miguel Alvarez (\email{kamapu78@gmail.com}).
+Miguel Alvarez, \email{kamapu78@gmail.com}.
 }
 \seealso{
 \code{\link[vegtable]{tv2vegtable}}, \code{\link[vegtable]{braun_blanquet}}.

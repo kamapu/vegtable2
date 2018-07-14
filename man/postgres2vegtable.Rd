@@ -37,7 +37,7 @@ Thus for databases placed in just one schema, this need to be set only in
 argument \code{'header_schema'}.
 }
 \author{
-Miguel Alvarez (\email{kamapu78@gmail.com}).
+Miguel Alvarez, \email{kamapu78@gmail.com}.
 }
 \examples{
 \dontrun{

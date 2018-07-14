@@ -3,7 +3,7 @@
 # Author: Miguel Alvarez
 ################################################################################
 
-pg_insert_name <- function(conn, df, schema) {
+pg_insert_name <- function(conn, schema, df) {
 	if(!"TaxonConceptID" %in% colnames(df))
 		stop("Column 'TaxonConceptID' is mandatory in argument 'df'.")
 	# 1: Extract usage IDs
@@ -34,4 +34,5 @@ WHERE
 	query <- paste0("alter sequence sudamerica.taxon_usage_id restart with ",
 			next_usage, ";")
 	dbSendQuery(conn, query)
+	message("DONE")
 }
