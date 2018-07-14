@@ -1,3 +1,8 @@
 language: r
 cache: packages
-sudo: true
+sudo: required
+dist: trusty
+r_packages:
+  - rgdal
+  - rgeos
+  - sp
