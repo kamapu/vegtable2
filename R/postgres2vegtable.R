@@ -14,7 +14,7 @@ postgres2vegtable <- function(conn, header_schema, species_schema,
 	if(!missing(geometry)) 
 		header <- data.frame(header[,colnames(header) != geometry],
 				dbGetQuery(conn,
-						paste0("SELECT \"ReleveID\", st_x (", geometry,
+						paste0("SELECT st_x (", geometry,
 								") longitude, st_y (", geometry,
 								") latitude FROM ", header_schema, ".header;")),
 				stringsAsFactors=FALSE)
