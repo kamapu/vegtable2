@@ -9,13 +9,28 @@ import_swea <- function(conn, header_schema="swea_dataveg",
 		description=c(database="SWEA-Dataveg", author="Miguel Alvarez",
 				givd_code="AF-00-006",
 				url="https://kamapu.github.io/swea_dataveg.html"),
-		add_relation=c(country_code="commons"), ...) {
+		add_relation=c(country_code="commons"),
+		references="M:/Literatur/00_DB_JabRef/MiguelReferences.bib", ...) {
 	VEG <- postgres2vegtable(conn=conn, header_schema=header_schema,
 			coverconvert_schema=coverconvert_schema, cover_names=cover_names,
 			geometry=geometry, description=description, ...)
 	for(i in names(add_relation)) {
 		VEG@relations[[i]] <- dbReadTable(conn=conn, c(add_relation[i], i))
 	}
+	# References
+	Refs <- ReadBib(references, check ="warn")
+	Refs <- as.data.frame(Refs, stringsAsFactors=FALSE)
+	Refs <- data.frame(bibtexkey=rownames(Refs), Refs, stringsAsFactors=FALSE)
+	VEG@relations$data_source <- data.frame(VEG@relations$data_source,
+			Refs[VEG@relations$data_source$bibtexkey,-1],
+			stringsAsFactors=FALSE)
+	VEG@relations$data_source <- VEG@relations$data_source[,
+			apply(VEG@relations$data_source, 2, function(x) !all(is.na(x)))]
+	VEG@species@taxonViews <- data.frame(VEG@species@taxonViews,
+			Refs[VEG@species@taxonViews$view_bibtexkey,-1],
+			stringsAsFactors=FALSE)
+	VEG@species@taxonViews <- VEG@species@taxonViews[,
+			apply(VEG@species@taxonViews, 2, function(x) !all(is.na(x)))]
 	return(VEG)
 }
 

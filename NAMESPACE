@@ -1,9 +1,10 @@
 ## Import functions
 importFrom(foreign, read.dbf)
-importFrom(utils, data, zip, askYesNo)
 importFrom(DBI, dbConnect, dbGetQuery, dbSendQuery, dbReadTable)
-importFrom(rpostgis, dbReadDataFrame, pgInsert)
 importFrom(methods, new)
+importFrom(RefManageR, ReadBib)
+importFrom(rpostgis, dbReadDataFrame, pgInsert)
+importFrom(utils, data, zip, askYesNo)
 
 ## Import of packages
 import(

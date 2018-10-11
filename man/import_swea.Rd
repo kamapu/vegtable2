@@ -13,7 +13,8 @@ import_swea(conn, header_schema="swea_dataveg", coverconvert_schema="commons",
 		description=c(database="SWEA-Dataveg", author="Miguel Alvarez",
 				givd_code="AF-00-006",
 				url="https://kamapu.github.io/swea_dataveg.html"),
-		add_relation=c(country_code="commons"), ...)
+		add_relation=c(country_code="commons"),
+		references="M:/Literatur/00_DB_JabRef/MiguelReferences.bib", ...)
 }
 \arguments{
 \item{conn}{A connection to database created by \code{\link[DBI]{dbConnect}}.}
@@ -28,6 +29,7 @@ import_swea(conn, header_schema="swea_dataveg", coverconvert_schema="commons",
 	as metadata.}
 \item{add_relation}{Named character vector indicating relations located in
 	different schemas (name is the relation table and value is the schema).}
+\item{references}{Path to bibtex file including bibliographic references.}
 \item{...}{Further arguments passed to \code{\link{postgres2vegtable}}.}
 }
 \details{

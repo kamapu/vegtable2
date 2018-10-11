@@ -6,14 +6,15 @@ Author: Miguel Alvarez <malvarez@uni-bonn.de>
 Maintainer: Miguel Alvarez <malvarez@uni-bonn.de>
 Depends:
 	R(>= 3.0.0),
+	taxlist,
+	vegtable
+Imports:
 	DBI,
 	foreign,
-	taxlist,
-	vegtable,
-	vegdata
-Imports:
 	methods,
-	rpostgis
+	RefManageR,
+	rpostgis,
+	vegdata
 Suggests:
 	devtools
 Description: Extension of 'taxlist' and 'vegtable' for internal purposes.
