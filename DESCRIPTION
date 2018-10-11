@@ -1,8 +1,7 @@
 Package: vegtable2
-Version: 0.1.0
+Version: 0.1.1
 Encoding: UTF-8
-Date: 2018-07-14
-Title: Handling Vegetation Data Sets (advanced)
+Title: Handling Vegetation Data Sets (Advanced Features)
 Author: Miguel Alvarez <malvarez@uni-bonn.de>
 Maintainer: Miguel Alvarez <malvarez@uni-bonn.de>
 Depends:
@@ -23,8 +22,8 @@ URL: https://github.com/kamapu/vegtable
 BugReports: https://github.com/kamapu/vegtable/issues
 Collate:
 	'NULLing.R'
+	'get_precision.R'
 	'clone.R'
-	'swea_import.R'
 	'taxlist2tvlist.R'
 	'postgres2taxlist.R'
 	'postgres2vegtable.R'
@@ -33,3 +32,4 @@ Collate:
 	'pg_delete_concept.R'
 	'pg_delete_name.R'
 	'pg_merge_concepts.R'
+	'import_swea.R'
