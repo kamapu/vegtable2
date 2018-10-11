@@ -1,3 +1,14 @@
+vegtable2 0.1.1
+===============
+
+### New Features
+
+* New function `get_precision()` for getting length and precision of numeric vectors to be used in definitions of tables for relational databases
+
+### Improvements
+
+* Function `import_swea()` Adapted to a **PostgreSQL** version of [**SWEA-Dataveg**](http://www.givd.info/ID/AF-00-006)
+
 vegtable2 0.1.0
 ===============
 

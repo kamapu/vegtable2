@@ -1,7 +1,7 @@
 ## Import functions
 importFrom(foreign, read.dbf)
 importFrom(utils, data, zip, askYesNo)
-importFrom(DBI, dbConnect, dbGetQuery, dbSendQuery)
+importFrom(DBI, dbConnect, dbGetQuery, dbSendQuery, dbReadTable)
 importFrom(rpostgis, dbReadDataFrame, pgInsert)
 importFrom(methods, new)
 
@@ -15,6 +15,8 @@ import(
 ## Export of regular function names
 export(
 	clone,
+	get_precision,
+	import_swea,
 	pg_delete_concept,
 	pg_delete_name,
 	pg_insert_concept,
@@ -22,6 +24,5 @@ export(
 	pg_merge_concepts,
 	postgres2taxlist,
 	postgres2vegtable,
-	taxlist2tvlist,
-	swea_import
+	taxlist2tvlist
 )
