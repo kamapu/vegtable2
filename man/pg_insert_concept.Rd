@@ -1,6 +1,6 @@
 \name{pg_insert_concept}
 \alias{pg_insert_concept}
-\alias{pg_insert_name}
+\alias{pg_insert_synonym}
 
 \title{Insert Names or Concepts in PostgreSQL Taxonomic Lists}
 \description{
@@ -10,7 +10,7 @@ Insert synonyms to existing taxa in a PostgreSQL version of
 \usage{
 pg_insert_concept(conn, schema, df)
 
-pg_insert_name(conn, schema, df)
+pg_insert_synonym(conn, schema, df)
 }
 \arguments{
 \item{conn}{A database connection provided by \code{\link[DBI]{dbConnect}}.}

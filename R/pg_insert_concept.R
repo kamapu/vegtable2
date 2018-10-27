@@ -8,7 +8,7 @@ pg_insert_concept <- function(conn, schema, df) {
 	if(any(!c("TaxonName","AuthorName") %in% colnames(df)))
 		stop("Columns 'TaxonName' and 'AuthorName' are mandatory in argument 'df'.")
 	if("TaxonConceptID" %in% colnames(df))
-		stop("Column 'TaxonConceptID' detected in 'df'. Use 'pg_insert_name' instead?")
+		stop("Column 'TaxonConceptID' detected in 'df'. Use 'pg_insert_synonym' instead?")
 	taxa <- postgres2taxlist(conn, schema)
 	## Cross-check
 	# 1: Check duplicated combinations in 'df'

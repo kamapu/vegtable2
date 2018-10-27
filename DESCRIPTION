@@ -29,7 +29,7 @@ Collate:
 	'postgres2taxlist.R'
 	'postgres2vegtable.R'
 	'pg_insert_concept.R'
-	'pg_insert_name.R'
+	'pg_insert_synonym.R'
 	'pg_delete_concept.R'
 	'pg_delete_name.R'
 	'pg_merge_concepts.R'
