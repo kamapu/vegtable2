@@ -6,10 +6,10 @@ Author: Miguel Alvarez <malvarez@uni-bonn.de>
 Maintainer: Miguel Alvarez <malvarez@uni-bonn.de>
 Depends:
 	R(>= 3.0.0),
+	DBI,
 	taxlist,
 	vegtable
 Imports:
-	DBI,
 	foreign,
 	methods,
 	RefManageR,
