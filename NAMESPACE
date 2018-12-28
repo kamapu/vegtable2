@@ -3,6 +3,7 @@ importFrom(foreign, read.dbf)
 importFrom(DBI, dbConnect, dbGetQuery, dbSendQuery, dbReadTable)
 importFrom(methods, new)
 importFrom(RefManageR, ReadBib)
+importFrom(rmarkdown, render)
 importFrom(rpostgis, dbReadDataFrame, pgInsert)
 importFrom(utils, data, zip, askYesNo)
 
@@ -26,4 +27,9 @@ export(
 	postgres2taxlist,
 	postgres2vegtable,
 	taxlist2tvlist
+)
+
+## Export of methods
+exportMethods(
+	report_communities
 )

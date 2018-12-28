@@ -1,3 +1,9 @@
+vegtable2 0.1.2
+===============
+
+### New Features
+* New function `report_communities()`
+
 vegtable2 0.1.1
 ===============
 
