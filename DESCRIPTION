@@ -36,3 +36,4 @@ Collate:
 	'pg_merge_concepts.R'
 	'report_communities.R'
 	'import_swea.R'
+	'version_svg.R'

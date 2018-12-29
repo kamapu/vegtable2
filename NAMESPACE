@@ -27,7 +27,8 @@ export(
 	pg_merge_concepts,
 	postgres2taxlist,
 	postgres2vegtable,
-	taxlist2tvlist
+	taxlist2tvlist,
+	version_svg
 )
 
 ## Export of methods
