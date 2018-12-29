@@ -41,12 +41,14 @@ setMethod("report_communities", signature(veg="vegtable"),
 			comm <- split(comm, comm$bibtexkey)
 			Content <- list()
 			for(i in names(comm)) {
-				Content[[i]] <- paste0("**`r capture.output(print(refs[\"", i,
-				        "\"], .opts=list(bib.style=\"authoryear\")))`**\n")
+				Content[[i]] <- paste0("**[", i,
+						"]** `r capture.output(print(refs[\"", i,
+				        "\"], .opts=list(bib.style=\"authoryear\")))`\n")
 				for(j in 1:nrow(comm[[i]]))
-					Content[[i]][j + 1] <- paste0(
-							paste0(comm[[i]][j,"community_name"], " \\dotfill ",
-									comm[[i]][j,"ReleveID"], " plots\n"))
+					Content[[i]][j + 1] <- paste0("**",
+							comm[[i]][j,"community_type"], ". ",
+							comm[[i]][j,"community_name"],
+							"** \\dotfill ", comm[[i]][j,"ReleveID"], "\n")
 				Content[[i]][length(Content[[i]]) + 1] <- "\\vspace{5mm}"
 			}
 			## write(c(Head, unlist(Content)), filename)
