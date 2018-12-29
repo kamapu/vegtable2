@@ -4,7 +4,7 @@
 ################################################################################
 
 version_svg <- function(file, version) {
-	file <- paste(file, ".svg")
+	file <- paste0(file, ".svg")
 	write(paste("
 							<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"108\" height=\"20\">
 							<linearGradient id=\"b\" x2=\"0\" y2=\"100%\">
