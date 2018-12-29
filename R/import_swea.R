@@ -34,6 +34,16 @@ import_swea <- function(conn, header_schema="swea_dataveg",
 	return(VEG)
 }
 
+# Version for sudamerica
+import_sudamerica <- function(conn, header_schema="sudamerica", description,
+		...) {
+	if(missing(description))
+		description=c(database="sudamerica", author="Miguel Alvarez",
+				givd_code="SA-CL-001",
+				url="https://kamapu.github.io/sudamerica.html")
+	import_swea(conn, header_schema, description=description)
+}
+
 ## TV-version is deprecated
 ## swea_import <- function(db="Sweadataveg", ...) {
 ##     x <- tv2vegtable(db, ...)

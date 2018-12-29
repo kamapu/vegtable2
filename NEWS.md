@@ -3,6 +3,7 @@ vegtable2 0.1.2
 
 ### New Features
 * New function `report_communities()`
+* New function `import_sudamerica()`
 
 vegtable2 0.1.1
 ===============

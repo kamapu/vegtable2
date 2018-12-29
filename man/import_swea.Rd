@@ -1,7 +1,8 @@
 \name{import_swea}
 \alias{import_swea}
+\alias{import_sudamerica}
 
-\title{Import SWEA-Dataveg}
+\title{Personalized Import Functions}
 \description{
 This function performs a personalized import for the database
 \href{http://www.givd.info/ID/AF-00-006}{SWEA-Dataveg} and is a wrapper for
@@ -15,6 +16,7 @@ import_swea(conn, header_schema="swea_dataveg", coverconvert_schema="commons",
 				url="https://kamapu.github.io/swea_dataveg.html"),
 		add_relation=c(country_code="commons"),
 		references="M:/Literatur/00_DB_JabRef/MiguelReferences.bib", ...)
+import_sudamerica(conn, header_schema="sudamerica", description, ...)
 }
 \arguments{
 \item{conn}{A connection to database created by \code{\link[DBI]{dbConnect}}.}

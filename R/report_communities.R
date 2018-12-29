@@ -42,7 +42,7 @@ setMethod("report_communities", signature(veg="vegtable"),
 			Content <- list()
 			for(i in names(comm)) {
 				Content[[i]] <- paste0("**`r capture.output(print(refs[\"", i,
-						"\"], .opts=list(bib.style=\"authoryear\")))`**\n")
+				        "\"], .opts=list(bib.style=\"authoryear\")))`**\n")
 				for(j in 1:nrow(comm[[i]]))
 					Content[[i]][j + 1] <- paste0(
 							paste0(comm[[i]][j,"community_name"], " \\dotfill ",
