@@ -5,6 +5,10 @@ vegtable2 0.1.2
 * New function `report_communities()`
 * New function `import_sudamerica()`
 * New function `version_svg()`
+* New function `get_description()`
+
+### Bug Fixes
+* Function `get_precision()` provided wrong information for short strings with NAs
 
 vegtable2 0.1.1
 ===============

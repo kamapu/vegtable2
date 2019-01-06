@@ -2,8 +2,9 @@ Package: vegtable2
 Version: 0.1.2
 Encoding: UTF-8
 Title: Handling Vegetation Data Sets (Advanced Features)
-Author: Miguel Alvarez <malvarez@uni-bonn.de>
-Maintainer: Miguel Alvarez <malvarez@uni-bonn.de>
+Authors@R:
+	person("Miguel", "Alvarez", email="kamapu78@gmail.com",
+		role=c("aut","cre"), comment=c(ORCID="0000-0003-1500-1834"))
 Depends:
 	R(>= 3.0.0),
 	DBI,
@@ -15,6 +16,7 @@ Imports:
 	methods,
 	rmarkdown,
 	rpostgis,
+	RPostgreSQL,
 	vegdata
 Suggests:
 	devtools
@@ -36,4 +38,5 @@ Collate:
 	'pg_merge_concepts.R'
 	'report_communities.R'
 	'import_swea.R'
+	'get_description.R'
 	'version_svg.R'

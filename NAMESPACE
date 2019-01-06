@@ -33,5 +33,6 @@ export(
 
 ## Export of methods
 exportMethods(
+	get_description,
 	report_communities
 )
