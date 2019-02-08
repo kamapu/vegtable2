@@ -11,23 +11,26 @@ setGeneric("report_communities",
 
 # Method for vegtable objects
 setMethod("report_communities", signature(veg="vegtable"),
-		function(veg, refs, filename, title, author, date,
-				date_format="%d-%m-%Y", keep_rmd=TRUE, ...) {
+		function(veg, bib, filename, title, author, date,
+				date_format="%d-%m-%Y", keep_rmd=TRUE, biblio_style="abbrvnat",
+				...) {
 			filename <- paste0(filename, ".Rmd")
 			if(!missing(date))
 				if(class(date) != "Date")
 					stop("Argument 'date' has to be of class 'Date'")
 			if(missing(date))
 				date <- Sys.Date()
-			if(class(refs)[1] != "BibEntry")
-				stop("Argument 'refs' has to be of class 'BibEntry'")
 			# Structure Head of text
 			Head <- paste0(
 					"---\n",
 					paste0("title: \"", title, "\"\n"),
 					paste0("author: \"", author, "\"\n"),
 					paste0("date: \"", format(date, date_format), "\"\n"),
-					"output: pdf_document\n",
+					"header-includes:\n  - \\usepackage[utf8]{inputenc}\n  - \\usepackage[T1]{fontenc}\n  - \\usepackage{bibentry}\n",
+					paste0("  - \\nobibliography{", bib,"}\n"),
+					"output:\n  pdf_document:\n    citation_package: natbib\n",
+					paste0("biblio-style: ", biblio_style, "\n"),
+					paste0("bibliography: ", bib, "\n"),
 					"---\n",
 					"\n")
 			# Structure the content
@@ -41,9 +44,7 @@ setMethod("report_communities", signature(veg="vegtable"),
 			comm <- split(comm, comm$bibtexkey)
 			Content <- list()
 			for(i in names(comm)) {
-				Content[[i]] <- paste0("**[", i,
-						"]** `r capture.output(print(refs[\"", i,
-				        "\"], .opts=list(bib.style=\"authoryear\")))`\n")
+				Content[[i]] <- paste0("**[", i, "]** \\bibentry{", i, "}\n")
 				for(j in 1:nrow(comm[[i]]))
 					Content[[i]][j + 1] <- paste0("**",
 							comm[[i]][j,"community_type"], ". ",
@@ -53,9 +54,10 @@ setMethod("report_communities", signature(veg="vegtable"),
 			}
 			## write(c(Head, unlist(Content)), filename)
 			con <- file(filename, "wb")
-			writeBin(charToRaw(do.call(paste0, list(c(Head, unlist(Content)),
-											collapse="\n"))), con,
-					endian="little")
+			writeBin(charToRaw(do.call(paste0, list(c(Head, unlist(Content),
+													"\\pagebreak"),
+											collapse="\n"))),
+					con, endian="little")
 			close(con)
 			## compile with rmarkdown
 			render(filename, encoding="UTF-8")

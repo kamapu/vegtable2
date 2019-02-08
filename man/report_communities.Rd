@@ -11,12 +11,12 @@ The function is adapted to our own databases and may not work in other data
 sets.
 }
 \usage{
-\S4method{report_communities}{vegtable}(veg, refs, filename, title, author,
-	date, date_format="\%d-\%m-\%Y", keep_rmd=TRUE, ...)
+\S4method{report_communities}{vegtable}(veg, bib, filename, title, author,
+	date, date_format="\%d-\%m-\%Y", keep_rmd=TRUE, biblio_style="abbrvnat", ...)
 }
 \arguments{
 \item{veg}{An object of class \code{\linkS4class{vegtable}}.}
-\item{refs}{An object of class \code{\link[RefManageR]{BibEntry}}.}
+\item{bib}{Name of bibliography file (.bib) as chararcter value.}
 \item{filename}{A character value indicating the name of the resulting file
 	without extension.}
 \item{title,author}{Character values used in the title page.}
@@ -26,6 +26,8 @@ sets.
 	date in the title page.}
 \item{keep_rmd}{Logical value, whether the resulting Rmd file should be deleted
 	after rendering or not.}
+\item{biblio_style}{Character value indicating the name of the bibliography
+	style in the package 'natbib'.}
 \item{...}{Further arguments passed among methods.}
 }
 \details{
