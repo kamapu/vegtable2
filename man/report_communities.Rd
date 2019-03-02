@@ -12,7 +12,8 @@ sets.
 }
 \usage{
 \S4method{report_communities}{vegtable}(veg, bib, filename, title, author,
-	date, date_format="\%d-\%m-\%Y", keep_rmd=TRUE, biblio_style="abbrvnat", ...)
+	date, date_format="\%d-\%m-\%Y", papersize="a4", keep_rmd=TRUE,
+	biblio_style="abbrvnat", ...)
 }
 \arguments{
 \item{veg}{An object of class \code{\linkS4class{vegtable}}.}
@@ -24,6 +25,7 @@ sets.
 	page.}
 \item{date_format}{Character value indicating the format used for displaying the
 	date in the title page.}
+\item{papersize}{Character value indicating the paper format.}
 \item{keep_rmd}{Logical value, whether the resulting Rmd file should be deleted
 	after rendering or not.}
 \item{biblio_style}{Character value indicating the name of the bibliography

@@ -12,8 +12,8 @@ setGeneric("report_communities",
 # Method for vegtable objects
 setMethod("report_communities", signature(veg="vegtable"),
 		function(veg, bib, filename, title, author, date,
-				date_format="%d-%m-%Y", keep_rmd=TRUE, biblio_style="abbrvnat",
-				...) {
+				date_format="%d-%m-%Y", papersize="a4", keep_rmd=TRUE,
+				biblio_style="abbrvnat", ...) {
 			filename <- paste0(filename, ".Rmd")
 			if(!missing(date))
 				if(class(date) != "Date")
@@ -31,6 +31,7 @@ setMethod("report_communities", signature(veg="vegtable"),
 					"output:\n  pdf_document:\n    citation_package: natbib\n",
 					paste0("biblio-style: ", biblio_style, "\n"),
 					paste0("bibliography: ", bib, "\n"),
+					paste0("papersize: ", papersize, "\n"),
 					"---\n",
 					"\n")
 			# Structure the content
