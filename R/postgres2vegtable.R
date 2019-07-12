@@ -9,15 +9,15 @@ postgres2vegtable <- function(conn, header_schema, species_schema,
 	# Import taxonomic tables
 	if(missing(species_schema)) species_schema <- header_schema
 	species_obj <- postgres2taxlist(conn, species_schema)
+	## TODO: use pgGetGeom instead
 	# Header data
-	header <- dbReadDataFrame(conn=conn, name=c(header_schema, "header"))
-	if(!missing(geometry)) 
-		header <- data.frame(header[,colnames(header) != geometry],
-				dbGetQuery(conn,
-						paste0("SELECT st_x (", geometry,
-								") longitude, st_y (", geometry,
-								") latitude FROM ", header_schema, ".header;")),
+	if(missing(geometry)) {
+		header <- dbReadDataFrame(conn=conn, name=c(header_schema, "header"))
+	} else {
+		header <- as.data.frame(pgGetGeom(conn, c(header_schema, "header"), geometry),
 				stringsAsFactors=FALSE)
+		colnames(header)[ncol(header) + c(-1,0)] <- c("longitude","latitude")
+	}
 	# Relations
 	if(missing(relations_schema)) relations_schema <- header_schema
 	table_name <- dbGetQuery(conn,
