@@ -1,4 +1,4 @@
-\name{import_swea}
+\name{import_swea, import_sudamerica}
 \alias{import_swea}
 \alias{import_sudamerica}
 
@@ -14,7 +14,7 @@ import_swea(conn, header_schema="swea_dataveg", coverconvert_schema="commons",
 		description=c(database="SWEA-Dataveg", author="Miguel Alvarez",
 				givd_code="AF-00-006",
 				url="https://kamapu.github.io/swea_dataveg.html"),
-		add_relation=c(country_code="commons"),
+		add_relation,
 		references="M:/Literatur/00_DB_JabRef/MiguelReferences.bib", ...)
 import_sudamerica(conn, header_schema="sudamerica", description, ...)
 }
