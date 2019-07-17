@@ -39,4 +39,5 @@ Collate:
 	'report_communities.R'
 	'import_swea.R'
 	'get_description.R'
+	'givd_summary.R'
 	'version_svg.R'

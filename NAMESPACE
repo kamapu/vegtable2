@@ -18,6 +18,7 @@ import(
 export(
 	clone,
 	get_precision,
+	givd_summary,
 	import_sudamerica,
 	import_swea,
 	pg_delete_concept,
