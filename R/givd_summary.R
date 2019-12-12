@@ -30,7 +30,7 @@ givd_summary <- function(obj) {
 			as.integer(year)[match(obj$data_source, data_source)])
 	record_year <- replace_na(record_year, 1:length(record_year),
 			1:length(publ_year), publ_year)
-	year_range <- range(record_year)
+	year_range <- range(record_year, na.rm=TRUE)
 	message(paste0("## Record Year Range: ", paste(year_range, collapse=" - ")))
 	year_cuts <- c(0,1900 + seq(20, 120, 10))
 	year_range <- round(summary(cut(record_year, year_cuts, include.lowest=TRUE,

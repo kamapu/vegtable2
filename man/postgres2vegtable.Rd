@@ -44,7 +44,7 @@ Miguel Alvarez, \email{kamapu78@gmail.com}.
 library(vegtable2)
 conn <- dbConnect()
 Data <- postgres2vegtable(conn, header_schema="veg_database",
-	cover_names=c("bb_old","bb_new"), geometry="plot_centroids"
+	cover_names=c("bb_old","bb_new"), geometry="plot_centroid",
 	description=c(database="my database", author="me"))
 dbDisconnect(conn)
 summary(Data)
