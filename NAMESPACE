@@ -28,6 +28,8 @@ export(
 	pg_merge_concepts,
 	postgres2taxlist,
 	postgres2vegtable,
+	sudamerica_tax,
+	swea_tax,
 	taxlist2tvlist,
 	version_svg
 )

@@ -3,35 +3,100 @@
 # Author: Miguel Alvarez
 ################################################################################
 
-postgres2taxlist <- function(conn, schema) {
+# Main function
+postgres2taxlist <- function(conn, taxon_names, taxon_relations, taxon_traits,
+		taxon_views, taxon_levels, names2concepts, subset_levels=TRUE,
+		subset_views=TRUE, as_list=FALSE, ...) {
 	species_obj <- list()
-	for(i in c("taxonNames","names2concepts","taxonRelations","taxonViews",
-			"taxonLevels","taxonTraits")) {
-		species_obj[[i]] <- dbReadDataFrame(conn=conn,
-				name=c(schema, i))
-	}
-	# Format for taxlist
-	species_obj$taxonRelations$Level <- with(species_obj$taxonLevels,
-			factor(species_obj$taxonRelations$Level, Level[order(rank)]))
-	species_obj$taxonNames$TaxonConceptID <- with(species_obj$names2concepts,
-			TaxonConceptID[match(species_obj$taxonNames$TaxonUsageID,
-							TaxonUsageID)])
-	species_obj$taxonRelations$Basionym <- with(species_obj$names2concepts[
-					species_obj$names2concepts$NameStatus == "basionym",],
-			TaxonUsageID[match(species_obj$taxonRelations$TaxonConceptID,
-							TaxonConceptID)])
-	species_obj$taxonRelations$AcceptedName <- with(species_obj$names2concepts[
-					species_obj$names2concepts$NameStatus == "accepted",],
-			TaxonUsageID[match(species_obj$taxonRelations$TaxonConceptID,
-							TaxonConceptID)])
-	if(ncol(species_obj$taxonTraits) == 0)
-		species_obj$taxonTraits <- data.frame(TaxonConceptID=integer())
-	species_obj <- with(species_obj,
-			new("taxlist",
-					taxonNames=clean_strings(taxonNames),
-					taxonRelations=clean_strings(taxonRelations),
-					taxonViews=clean_strings(taxonViews),
-					taxonTraits=clean_strings(taxonTraits)))
-	return(species_obj)
+	# Import taxon names
+	message("Importing taxon names...")
+	SQL <- paste0("SELECT *\n",
+			"FROM \"", paste(taxon_names, collapse="\".\""), "\";\n")
+	species_obj$taxonNames <- dbGetQuery(conn, SQL)
+	# Import taxon concepts
+	message("Importing taxon concepts...")
+	SQL <- paste0("SELECT *\n",
+			"FROM \"", paste(taxon_relations, collapse="\".\""), "\";\n")
+	species_obj$taxonRelations <- dbGetQuery(conn, SQL)
+	# Link names and concepts
+	SQL <- paste0("SELECT *\n",
+			"FROM \"", paste(names2concepts, collapse="\".\""), "\";\n")
+	concepts <- dbGetQuery(conn, SQL)
+	species_obj$taxonNames$TaxonConceptID <-
+			concepts$TaxonConceptID[match(species_obj$taxonNames$TaxonUsageID,
+							concepts$TaxonUsageID)]
+	species_obj$taxonNames <-
+			species_obj$taxonNames[
+					!is.na(species_obj$taxonNames$TaxonConceptID),]
+	# Add status (accepted names)
+	species_obj$taxonRelations$AcceptedName <-
+			with(concepts[concepts$NameStatus == "accepted",],
+					TaxonUsageID[
+							match(species_obj$taxonRelations$TaxonConceptID,
+									TaxonConceptID)])
+	species_obj$taxonRelations$Basionym <-
+			with(concepts[concepts$NameStatus == "basionym",],
+					TaxonUsageID[
+							match(species_obj$taxonRelations$TaxonConceptID,
+									TaxonConceptID)])
+	# Retrieve levels
+	SQL <-  paste0("SELECT *\n",
+			"FROM \"", paste(taxon_levels, collapse="\".\""), "\";\n")
+	tax_levels <- dbGetQuery(conn, SQL)
+	if(subset_levels) tax_levels <- tax_levels[tax_levels$Level %in%
+						species_obj$taxonRelations$Level,]
+	tax_levels <- tax_levels[order(tax_levels$rank),]
+	species_obj$taxonRelations$Level <- factor(species_obj$taxonRelations$Level,
+			tax_levels$Level)
+	# Retrieve taxon traits
+	SQL <-  paste0("SELECT *\n",
+			"FROM \"", paste(taxon_traits, collapse="\".\""), "\";\n")
+	species_obj$taxonTraits <- dbGetQuery(conn, SQL)
+	# Import taxon views
+	message("Importing taxon views...")
+	SQL <-  paste0("SELECT *\n",
+			"FROM \"", paste(taxon_views, collapse="\".\""), "\";\n")
+	species_obj$taxonViews <- dbGetQuery(conn, SQL)
+	colnames(species_obj$taxonViews)[colnames(species_obj$taxonViews) ==
+					"data_source"] <- "ViewID"
+	if(subset_views)
+		species_obj$taxonViews <- species_obj$taxonViews[
+				species_obj$taxonViews$ViewID %in%
+						species_obj$taxonRelations$ViewID,]
 	message("DONE")
+	if(as_list) return(species_obj) else {
+		species_obj <- with(species_obj,
+				new("taxlist",
+						taxonNames=clean_strings(taxonNames),
+						taxonRelations=clean_strings(taxonRelations),
+						taxonViews=clean_strings(taxonViews),
+						taxonTraits=clean_strings(taxonTraits)))
+		return(species_obj)
+	}
+}
+
+# Wrappers
+swea_tax <- function(conn,
+		taxon_names=c("tax_commons","taxonNames"),
+		taxon_relations=c("swea_dataveg","taxonRelations"),
+		taxon_traits=c("swea_dataveg","taxonTraits"),
+		taxon_views=c("commons","data_source"),
+		taxon_levels=c("tax_commons","taxonLevels"),
+		names2concepts=c("swea_dataveg","names2concepts"),
+		...) {
+	return(postgres2taxlist(conn, taxon_names, taxon_relations, taxon_traits,
+					taxon_views, taxon_levels, names2concepts, ...))
+}
+
+# Wrappers
+sudamerica_tax <- function(conn,
+		taxon_names=c("tax_commons","taxonNames"),
+		taxon_relations=c("sudamerica","taxonRelations"),
+		taxon_traits=c("sudamerica","taxonTraits"),
+		taxon_views=c("commons","data_source"),
+		taxon_levels=c("tax_commons","taxonLevels"),
+		names2concepts=c("sudamerica","names2concepts"),
+		...) {
+	return(postgres2taxlist(conn, taxon_names, taxon_relations, taxon_traits,
+					taxon_views, taxon_levels, names2concepts, ...))
 }

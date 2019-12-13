@@ -1,5 +1,5 @@
 Package: vegtable2
-Version: 0.1.2
+Version: 0.2.0
 Encoding: UTF-8
 Title: Handling Vegetation Data Sets (Advanced Features)
 Authors@R:
@@ -37,7 +37,6 @@ Collate:
 	'pg_delete_name.R'
 	'pg_merge_concepts.R'
 	'report_communities.R'
-	'import_swea.R'
 	'get_description.R'
 	'givd_summary.R'
 	'version_svg.R'

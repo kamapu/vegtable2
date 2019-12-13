@@ -1,6 +1,7 @@
 \name{postgres2vegtable}
 \alias{postgres2vegtable}
-\alias{postgres2taxlist}
+\alias{import_sudamerica}
+\alias{import_swea}
 
 \title{Import PostgreSQL databases into vegtable objects}
 \description{
@@ -8,27 +9,75 @@ Import and adaption of Postgres tables into objects of class
 \code{\linkS4class{vegtable}}.
 }
 \usage{
-## Importing taxlist objects
-postgres2taxlist(conn, schema)
+## Main function
+postgres2vegtable(conn, tax_args=list(), header, sql_header, samples,
+    relations=list(), layers=list(), coverconvert=list(), geometry, description,
+    as_list=FALSE, ...)
 
-## Importing vegtable objects
-postgres2vegtable(conn, header_schema, species_schema, relations_schema,
-	samples_schema, layers_schema, coverconvert_schema, cover_names, geometry,
-	description)
+## Wrapper for sudamerica
+import_sudamerica(conn,
+        header=c("sudamerica","header"),
+        samples=c("sudamerica","samples"),
+        relations=list(
+                community_type=c("commons","community_type"),
+                data_source=c("commons","data_source")
+        ),
+        layers=list(
+                spec_miguel=c("specimens","specimens_miguel")
+        ),
+        coverconvert=list(
+                br_bl=c("commons","br_bl"),
+                b_bbds=c("commons","b_bbds"),
+                ordinal=c("commons","ordinal")
+        ),
+        geometry="plot_centroid",
+        get_countries=TRUE,
+        ...)
+
+## Wrapper for SWEA-Dataveg
+import_swea(conn,
+    header=c("swea_dataveg","header"),
+    samples=c("swea_dataveg","samples"),
+    relations=list(
+        globe_plots=c("swea_dataveg","globe_plots"),
+        swea1_code=c("swea_dataveg","swea1_code"),
+        soil_moisture=c("swea_dataveg","soil_moisture"),
+        soil_texture=c("swea_dataveg","soil_texture"),
+        community_type=c("commons","community_type"),
+        data_source=c("commons","data_source"),
+        naturalness=c("swea_dataveg","naturalness"),
+        record_type=c("swea_dataveg","record_type")
+    ),
+    layers=list(
+        veg_layer=c("swea_dataveg","veg_layer"),
+        spec_miguel=c("specimens","specimens_miguel")
+    ),
+    coverconvert=list(
+        br_bl=c("commons","br_bl"),
+        b_bbds=c("commons","b_bbds"),
+        ordinal=c("commons","ordinal")
+    ),
+    geometry="plot_centroid",
+    get_countries=TRUE,
+    ...)
 }
 \arguments{
 \item{conn}{A database connection provided by \code{\link[DBI]{dbConnect}}.}
-\item{header_schema}{A character value indicating the schema, where the table
-	header is located.}
-\item{species_schema,schema}{Name of the schema containing taxonomic tables.}
-\item{relations_schema}{Name of the schema containing the relations to header.}
-\item{samples_schema}{Name of the schema containing the samples table.}
-\item{layers_schema}{Name of the schema containing the layers.}
-\item{coverconvert_schema}{Name of the schema containing the conversion table.}
-\item{cover_names}{Character vector indicating the variables in samples
-	representing cover values.}
-\item{geometry}{Name of the variable including the geometry.}
-\item{description}{A named vector used as metadata for the vegtable object.}
+\item{tax_args}{List of arguments passed to \code{\link{postgres2taxlist}}.}
+\item{header,samples}{Character vectors indicating the schema and table
+    containing header and samples information, respectively.}
+\item{sql_header}{SQL statement to be used instead of 'header'.}
+\item{relations,layers,coverconvert}{Lists of vectors for the respective slots,
+    each containing schema and name of required table.}
+\item{geometry}{Name of the variable in header containing the geometry of the
+    plots.}
+\item{description}{Named vector with metadata.}
+\item{as_list}{Logical value indicating whether a list or an object of class
+    \code{\linkS4class{vegtable}} should be returned.}
+\item{...}{Further arguments passed among methods}
+\item{get_countries}{Logical argument, specific for the databases 'sudamerica'
+    and 'SWEA-Dataveg', indicating whether country information should be
+    reimported from integrated map.}
 }
 \details{
 In the case that some schemas are not mentioned, the function assumes such
@@ -38,15 +87,4 @@ argument \code{'header_schema'}.
 }
 \author{
 Miguel Alvarez, \email{kamapu78@gmail.com}.
-}
-\examples{
-\dontrun{
-library(vegtable2)
-conn <- dbConnect()
-Data <- postgres2vegtable(conn, header_schema="veg_database",
-	cover_names=c("bb_old","bb_new"), geometry="plot_centroid",
-	description=c(database="my database", author="me"))
-dbDisconnect(conn)
-summary(Data)
-}
 }
