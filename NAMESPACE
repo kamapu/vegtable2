@@ -24,6 +24,7 @@ export(
 	pg_delete_concept,
 	pg_delete_name,
 	pg_insert_concept,
+	pg_insert_observations,
 	pg_insert_synonym,
 	pg_merge_concepts,
 	postgres2taxlist,

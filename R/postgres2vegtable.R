@@ -78,6 +78,7 @@ postgres2vegtable <- function(conn, tax_args=list(), header, sql_header,
 }
 
 ## TODO: Relations and layers can be as subsets
+## TODO: If using sql statements in wrappers, detect relations not included in header
 
 # Wrappers
 import_sudamerica <- function(conn,

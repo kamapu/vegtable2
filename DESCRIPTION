@@ -36,6 +36,7 @@ Collate:
 	'pg_delete_concept.R'
 	'pg_delete_name.R'
 	'pg_merge_concepts.R'
+	'pg_insert_observations.R'
 	'report_communities.R'
 	'get_description.R'
 	'givd_summary.R'
