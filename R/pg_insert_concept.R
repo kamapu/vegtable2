@@ -3,13 +3,17 @@
 # Author: Miguel Alvarez
 ################################################################################
 
-pg_insert_concept <- function(conn, schema, df) {
-	df <- clean_strings(df)
+pg_insert_concept <- function(conn, taxon_names, taxon_relations,
+		names2concepts, taxon_views, taxon_levels, df, clean=TRUE, ...) {
+	if(clean)
+		df <- clean_strings(df)
 	if(any(!c("TaxonName","AuthorName") %in% colnames(df)))
 		stop("Columns 'TaxonName' and 'AuthorName' are mandatory in argument 'df'.")
 	if("TaxonConceptID" %in% colnames(df))
 		stop("Column 'TaxonConceptID' detected in 'df'. Use 'pg_insert_synonym' instead?")
-	taxa <- postgres2taxlist(conn, schema)
+	taxa <- postgres2taxlist(conn, taxon_names, taxon_relations,
+			names2concepts=names2concepts, taxon_views=taxon_views,
+			taxon_levels=taxon_levels, verbose=FALSE, ...)
 	## Cross-check
 	# 1: Check duplicated combinations in 'df'
 	if(any(duplicated(df[,c("TaxonName","AuthorName")])))
@@ -47,19 +51,31 @@ pg_insert_concept <- function(conn, schema, df) {
 	df$TaxonUsageID <- max(taxa@taxonNames$TaxonUsageID) + c(1:nrow(df))
 	df$TaxonConceptID <- max(taxa@taxonRelations$TaxonConceptID) + c(1:nrow(df))
 	# 2: Get colnames of Postgres tables
-	taxon_names <- dbGetQuery(conn,
-			"SELECT column_name FROM information_schema.columns WHERE table_name = 'taxonNames';")
-	taxon_names <- unique(taxon_names$column_name)
+	description <- get_description(conn)
+	col_names <- with(description,
+			column[schema == taxon_names[1] & table == taxon_names[2]])
+	col_relations <- with(description,
+			column[schema == taxon_relations[1] & table == taxon_relations[2]])
 	taxon_relations <- dbGetQuery(conn,
 			"SELECT column_name FROM information_schema.columns WHERE table_name = 'taxonRelations';")
 	taxon_relations <- unique(taxon_relations$column_name)
 	## Import tables
 	# 2: Insert to database
-	pgInsert(conn, c(schema, "taxonNames"), df[,colnames(df) %in% taxon_names])
-	pgInsert(conn, c(schema, "taxonRelations"), df[,colnames(df) %in%
-							taxon_relations])
-	pgInsert(conn, c(schema, "names2concepts"),
+	pgInsert(conn, taxon_names, df[,colnames(df) %in% col_names])
+	pgInsert(conn, taxon_relations, df[,colnames(df) %in% col_relations])
+	pgInsert(conn, names2concepts,
 			data.frame(df[,c("TaxonUsageID", "TaxonConceptID")],
 					NameStatus="accepted", stringsAsFactors=FALSE))
-	message("DONE")
+}
+
+# Wrappers
+insert_concept_swea <- function(conn,
+		taxon_names=c("tax_commons", "taxonNames"),
+		taxon_relations=c("swea_dataveg", "taxonRelations"),
+		names2concepts=c("swea_dataveg", "names2concepts"),
+		taxon_views=c("commons","data_source"),
+		taxon_levels=c("tax_commons","taxonLevels"),
+		df, ...) {
+	pg_insert_concept(conn, taxon_names, taxon_relations, names2concepts,
+			taxon_views, taxon_levels, df, ...)
 }

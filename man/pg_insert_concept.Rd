@@ -1,6 +1,6 @@
 \name{pg_insert_concept}
 \alias{pg_insert_concept}
-\alias{pg_insert_synonym}
+\alias{insert_concept_swea}
 
 \title{Insert Names or Concepts in PostgreSQL Taxonomic Lists}
 \description{
@@ -8,15 +8,26 @@ Insert synonyms to existing taxa in a PostgreSQL version of
 \code{\linkS4class{taxlist}} objects.
 }
 \usage{
-pg_insert_concept(conn, schema, df)
+pg_insert_concept(conn, taxon_names, taxon_relations, names2concepts, taxon_views,
+	taxon_levels, df, clean=TRUE, ...)
 
-pg_insert_synonym(conn, schema, df)
+insert_concept_swea(conn,
+		taxon_names=c("tax_commons", "taxonNames"),
+		taxon_relations=c("swea_dataveg", "taxonRelations"),
+		names2concepts=c("swea_dataveg", "names2concepts"),
+		taxon_views=c("commons","data_source"),
+		taxon_levels=c("tax_commons","taxonLevels"),
+		df, ...)
 }
 \arguments{
 \item{conn}{A database connection provided by \code{\link[DBI]{dbConnect}}.}
-\item{schema}{Name of the schema containing taxonomic tables.}
+\item{taxon_names,taxon_relations,names2concepts,taxon_views,taxon_levels}{
+	Character vectors indicating the name of the respective schemas and tables
+	in database.}
 \item{df}{A data frame with new names and related information (including taxon
 	concept ID).}
+\item{clean}{A logical value indicating cleaning of characters.}
+\item{...}{Further arguments passed among methods.}
 }
 \details{
 This function is updating the tables \code{'taxonNames'} and

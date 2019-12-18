@@ -21,6 +21,7 @@ export(
 	givd_summary,
 	import_sudamerica,
 	import_swea,
+	insert_concept_swea,
 	pg_delete_concept,
 	pg_delete_name,
 	pg_insert_concept,

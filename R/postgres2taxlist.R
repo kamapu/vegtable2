@@ -6,15 +6,17 @@
 # Main function
 postgres2taxlist <- function(conn, taxon_names, taxon_relations, taxon_traits,
 		taxon_views, taxon_levels, names2concepts, subset_levels=TRUE,
-		subset_views=TRUE, as_list=FALSE, ...) {
+		subset_views=TRUE, as_list=FALSE, verbose=TRUE, ...) {
 	species_obj <- list()
 	# Import taxon names
-	message("Importing taxon names...")
+	if(verbose)
+		message("Importing taxon names...")
 	SQL <- paste0("SELECT *\n",
 			"FROM \"", paste(taxon_names, collapse="\".\""), "\";\n")
 	species_obj$taxonNames <- dbGetQuery(conn, SQL)
 	# Import taxon concepts
-	message("Importing taxon concepts...")
+	if(verbose)
+		message("Importing taxon concepts...")
 	SQL <- paste0("SELECT *\n",
 			"FROM \"", paste(taxon_relations, collapse="\".\""), "\";\n")
 	species_obj$taxonRelations <- dbGetQuery(conn, SQL)
@@ -49,11 +51,14 @@ postgres2taxlist <- function(conn, taxon_names, taxon_relations, taxon_traits,
 	species_obj$taxonRelations$Level <- factor(species_obj$taxonRelations$Level,
 			tax_levels$Level)
 	# Retrieve taxon traits
-	SQL <-  paste0("SELECT *\n",
-			"FROM \"", paste(taxon_traits, collapse="\".\""), "\";\n")
-	species_obj$taxonTraits <- dbGetQuery(conn, SQL)
+	if(!missing(taxon_traits)) {
+		SQL <-  paste0("SELECT *\n",
+				"FROM \"", paste(taxon_traits, collapse="\".\""), "\";\n")
+		species_obj$taxonTraits <- dbGetQuery(conn, SQL)
+	} else species_obj$taxonTraits <- data.frame(TaxonConceptID=integer(0))
 	# Import taxon views
-	message("Importing taxon views...")
+	if(verbose)
+		message("Importing taxon views...")
 	SQL <-  paste0("SELECT *\n",
 			"FROM \"", paste(taxon_views, collapse="\".\""), "\";\n")
 	species_obj$taxonViews <- dbGetQuery(conn, SQL)
@@ -63,7 +68,8 @@ postgres2taxlist <- function(conn, taxon_names, taxon_relations, taxon_traits,
 		species_obj$taxonViews <- species_obj$taxonViews[
 				species_obj$taxonViews$ViewID %in%
 						species_obj$taxonRelations$ViewID,]
-	message("DONE")
+	if(verbose)
+		message("DONE")
 	if(as_list) return(species_obj) else {
 		species_obj <- with(species_obj,
 				new("taxlist",

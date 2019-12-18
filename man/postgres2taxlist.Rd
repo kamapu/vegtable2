@@ -12,7 +12,7 @@ Ad-hoc function for importing Postgres tables into objects of class
 ## Basic function
 postgres2taxlist(conn, taxon_names, taxon_relations, taxon_traits,
 		taxon_views, taxon_levels, names2concepts, subset_levels=TRUE,
-		subset_views=TRUE, as_list=FALSE, ...)
+		subset_views=TRUE, as_list=FALSE, verbose=TRUE, ...)
 
 ## Alternative for sudamerica
 swea_tax(conn, taxon_names=c("tax_commons","taxonNames"),
@@ -46,6 +46,7 @@ sudamerica_tax(conn, taxon_names=c("tax_commons","taxonNames"),
 	views to the used ones or all.}
 \item{as_list}{Logical value indicating whether the output should be a list or a
 	\code{\linkS4class{taxlist}} object.}
+\item{verbose}{Logical value, whether messages should be printed or not.}
 \item{...}{Further arguments passed among methods. In the two wrappers the
 	arguments are passed to \code{'postgres2taxlist'}.}.
 }
