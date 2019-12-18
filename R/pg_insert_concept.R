@@ -48,7 +48,10 @@ pg_insert_concept <- function(conn, taxon_names, taxon_relations,
 	## TODO: Allow the possibility of inserting some taxon traits
 	## Prepare data frame
 	# 1: Add new IDs to data frame
-	df$TaxonUsageID <- max(taxa@taxonNames$TaxonUsageID) + c(1:nrow(df))
+	SQL <- paste0("SELECT MAX(\"TaxonUsageID\")", "\n",
+			"FROM \"", paste(taxon_names, collapse="\".\""), "\";", "\n")
+	usage_id <- unlist(dbGetQuery(conn, SQL))
+	df$TaxonUsageID <- usage_id + c(1:nrow(df))
 	df$TaxonConceptID <- max(taxa@taxonRelations$TaxonConceptID) + c(1:nrow(df))
 	# 2: Get colnames of Postgres tables
 	description <- get_description(conn)
