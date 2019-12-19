@@ -14,6 +14,12 @@ pg_insert_concept <- function(conn, taxon_names, taxon_relations,
 	taxa <- postgres2taxlist(conn, taxon_names, taxon_relations,
 			names2concepts=names2concepts, taxon_views=taxon_views,
 			taxon_levels=taxon_levels, verbose=FALSE, ...)
+	# Reimport views
+	SQL <-  paste0("SELECT *\n",
+			"FROM \"", paste(taxon_views, collapse="\".\""), "\";\n")
+	temp_views <- dbGetQuery(conn, SQL)
+	colnames(temp_views)[colnames(temp_views) == "data_source"] <- "ViewID"
+	taxa@taxonViews <- temp_views
 	## Cross-check
 	# 1: Check duplicated combinations in 'df'
 	if(any(duplicated(df[,c("TaxonName","AuthorName")])))
@@ -47,10 +53,23 @@ pg_insert_concept <- function(conn, taxon_names, taxon_relations,
 	}
 	## TODO: Allow the possibility of inserting some taxon traits
 	## Prepare data frame
-	# 1: Add new IDs to data frame
-	SQL <- paste0("SELECT MAX(\"TaxonUsageID\")", "\n",
-			"FROM \"", paste(taxon_names, collapse="\".\""), "\";", "\n")
-	usage_id <- unlist(dbGetQuery(conn, SQL))
+	# Check existence of the name combination
+	SQL <- paste0("SELECT \"TaxonUsageID\", \"TaxonName\", \"AuthorName\"", "\n",
+			"FROM \"", paste(taxon_names, collapse="\".\""), "\";")
+	db_names <- dbGetQuery(conn, SQL)
+	if(with(df, paste(TaxonName, AuthorName)) %in%
+			with(db_names, paste(TaxonName, AuthorName))) {
+		message(paste0("Taxon name '", with(df, paste(TaxonName, AuthorName)),
+								"' already in database. This name will be recycled.\n"))
+		usage_id <- unlist(db_names[with(db_names,
+										paste(TaxonName, AuthorName)) ==
+						with(df, paste(TaxonName, AuthorName)),
+				"TaxonUsageID"]) - 1
+	} else {
+		SQL <- paste0("SELECT MAX(\"TaxonUsageID\")", "\n",
+				"FROM \"", paste(taxon_names, collapse="\".\""), "\";", "\n")
+		usage_id <- unlist(dbGetQuery(conn, SQL))
+	}
 	df$TaxonUsageID <- usage_id + c(1:nrow(df))
 	df$TaxonConceptID <- max(taxa@taxonRelations$TaxonConceptID) + c(1:nrow(df))
 	# 2: Get colnames of Postgres tables
@@ -59,12 +78,12 @@ pg_insert_concept <- function(conn, taxon_names, taxon_relations,
 			column[schema == taxon_names[1] & table == taxon_names[2]])
 	col_relations <- with(description,
 			column[schema == taxon_relations[1] & table == taxon_relations[2]])
-	taxon_relations <- dbGetQuery(conn,
-			"SELECT column_name FROM information_schema.columns WHERE table_name = 'taxonRelations';")
-	taxon_relations <- unique(taxon_relations$column_name)
 	## Import tables
 	# 2: Insert to database
-	pgInsert(conn, taxon_names, df[,colnames(df) %in% col_names])
+	if(!with(df, paste(TaxonName, AuthorName)) %in%
+			with(db_names, paste(TaxonName, AuthorName))) {
+		pgInsert(conn, taxon_names, df[,colnames(df) %in% col_names])
+	}
 	pgInsert(conn, taxon_relations, df[,colnames(df) %in% col_relations])
 	pgInsert(conn, names2concepts,
 			data.frame(df[,c("TaxonUsageID", "TaxonConceptID")],
