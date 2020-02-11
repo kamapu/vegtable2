@@ -1,13 +1,32 @@
-# TODO:   Retrieving descriptions from tables in a database
-# 
-# Author: Miguel Alvarez
-################################################################################
-
-# Generic function
+#' @name get_description
+#' 
+#' @title  Get descriptions of table columns from Postgres tables
+#' 
+#' @description 
+#' Descriptions of variables stored in PostgreSQL tables.
+#' 
+#' This function produces a data frame containing information on schemas,
+#' tables and descriptions (i.e. comments) for every single column in tables
+#' stored at a PostgreSQL database.
+#' 
+#' @param conn A \code{\linkS4class{PostgreSQLConnection}} object.
+#' @param ... Further arguments passed among methods.
+#' 
+#' @return An object of class [data.frame].
+#' 
+#' @author Miguel Alvarez \email{malvarez@@uni-bonn.de}
+#' 
+#' @rdname get_description
+#' 
+#' @exportMethod get_description
+#' 
 setGeneric("get_description", function(conn, ...)
 			standardGeneric("get_description"))
 
-# Method for connection-class
+#' @rdname get_description
+#' 
+#' @aliases get_description,PostgreSQLConnection-method
+#' 
 setMethod("get_description", signature(conn="PostgreSQLConnection"),
 		function(conn, ...) {
 			SQL <- "

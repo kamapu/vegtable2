@@ -1,17 +1,7 @@
-# TODO:   Convert taxlist to turboveg-like list and protopype for export
-# 
-# Author: Miguel Alvarez
-################################################################################
-
-# Inverse function to TCS.replace2 (see in tvsplist, package taxlist)
-TCS.replace2.back <- function(x) {
-    x <- replace(x, x == "TaxonUsageID", "SPECIES_NR")
-    x <- replace(x, x == "TaxonName", "ABBREVIAT")
-    x <- replace(x, x == "AuthorName", "AUTHOR")
-    x <- replace(x, x == "TaxonConceptID", "VALID_NR")
-}
-
-# Internal function to create LETTERCODE
+#' Internal function to create LETTERCODE
+#' 
+#' @keywords internal
+#' 
 get_code <- function(x) {
     x <- strsplit(x, " ", fixed=TRUE)
     x <- sapply(x, "[", c(1,2,4))
@@ -22,7 +12,31 @@ get_code <- function(x) {
     return(x)
 }
 
-# The function
+#' @name taxlist2tvlist
+#' 
+#' @title Convert taxlist objects to Turboveg format
+#' 
+#' @description 
+#' This is a function converting [taxlist-class] objects to a **Turboveg** like
+#' format.
+#' It may be used as prototype for an eventual export function.
+#' 
+#' This function basically export the slots `taxonNames` and `taxonTraits`,
+#' adapts the respective column names to **Turboveg**, and generates
+#' automatically some fields that are usually not requested in [taxlist-class]
+#' objects.
+#' 
+#' Names belonging to a same concept get a common `LETTERCODE`.
+#' 
+#' @param taxlist A [taxlist-class] object.
+#' @param ecodbase A logical value, whether the slot \code{'taxonTraits'} may
+#'     be exported or not.
+#' @author Miguel Alvarez \email{malvarez@@uni-bonn.de}
+#' 
+#' @seealso [taxlist-class] [tv2taxlist()]
+#' 
+#' @export taxlist2tvlist
+#' 
 taxlist2tvlist <- function(taxlist, ecodbase=TRUE) {
     if(class(taxlist) != "taxlist")
         stop("'taxlist' have to be of class 'taxlist'", call.=FALSE)
@@ -43,8 +57,10 @@ taxlist2tvlist <- function(taxlist, ecodbase=TRUE) {
             "LETTERCODE"]
     # Final version
     taxlist <- taxlist@taxonNames
-    colnames(taxlist) <- TCS.replace2.back(colnames(taxlist))
-    Head <- c("SPECIES_NR","LETTERCODE","SHORTNAME","ABBREVIAT","NATIVENAME",
+    colnames(taxlist) <- replace_x(colnames(taxlist),
+			old=c("TaxonUsageID","TaxonName","AuthorName","TaxonConceptID"),
+			new=c("SPECIES_NR","ABBREVIAT","AUTHOR","VALID_NR"))
+	Head <- c("SPECIES_NR","LETTERCODE","SHORTNAME","ABBREVIAT","NATIVENAME",
             "AUTHOR","SYNONYM","VALID_NR")
     Head <- c(Head, colnames(taxlist)[!colnames(taxlist) %in% Head])
     taxlist <- list(species=taxlist[,Head])

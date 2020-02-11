@@ -1,8 +1,38 @@
-# TODO:   A function to clone Turboveg databases
-# 
-# Author: Miguel Alvarez
-################################################################################
-
+#' @name clone
+#' 
+#' @title Clone Turboveg databases
+#' 
+#' @description 
+#' Packing respective files belonging to a Turboveg database into a zip file.
+#' 
+#' This function attempts to substitute the backup options from **Turboveg**,
+#' generating a backup of the whole database at once.
+#' 
+#' For `stamp=TRUE`, the system date will be included in the name of the
+#' resulting zip file.
+#' 
+#' If `overwrite=FALSE` overwriting homonymous zip files will be avoided
+#' by inserting a numerical suffix to the resulting zip file.
+#' 
+#' @param db_name Name of database as character value.
+#' @param tv_home Character value indicating the path to Turboveg's home
+#'     directory.
+#' @param stamp Logical value indicating whether the date should be included in
+#'     the zip file's name or not.
+#' @param overwrite Logical value indicating whether existing files should be
+#'     overwritten or not.
+#' @param extras Logical value indicating the occurrence of extra files (see
+#'     Details).
+#' @param ... Additional arguments passed to function [zip()].
+#' 
+#' @author Miguel Alvarez \email{malvarez@@uni-bonn.de}
+#' 
+#' @examples
+#' ## Add example for this function
+#' ## unzip(file, exdir=tv.home())
+#' 
+#' @export clone
+#' 
 clone <- function(db_name, tv_home=tv.home(), stamp=TRUE, overwrite=FALSE,
         extras=FALSE, ...) {
     oldWD <- getwd()

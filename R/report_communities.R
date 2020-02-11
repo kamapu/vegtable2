@@ -1,15 +1,49 @@
-# TODO:   Function reporting communities in databases
-# 
-# Author: Miguel Alvarez
-################################################################################
-
-# Generic function
+#' @name report_communities
+#' 
+#' @title Summary on plant communities stored in vegtable objects
+#' 
+#' @description 
+#' This function produces a report on plant communities stored in an object of
+#' class [vegtable-class].
+#' The function is adapted to our own databases and may not work in other data
+#' sets.
+#' 
+#' This function generates a quick overview of references and communities
+#' stored in a data set formatted as [vegtable-class] object.
+#' 
+#' @param veg An object of class [vegtable-class].
+#' @param bib Name of bibliography file (.bib) as chararcter value.
+#' @param filename A character value indicating the name of the resulting file
+#'     without extension.
+#' @param title,author Character values used in the title page.
+#' @param date A value of class \code{\link{Date}} to be inserted in the title
+#'     page.
+#' @param date_format Character value indicating the format used for displaying
+#'     the date in the title page.
+#' @param papersize Character value indicating the paper format.
+#' @param keep_rmd Logical value, whether the resulting Rmd file should be
+#'     deleted after rendering or not.
+#' @param biblio_style Character value indicating the name of the bibliography
+#'     style in the package 'natbib'.
+#' @param ... Further arguments passed among methods.
+#' 
+#' @return A PDF file.
+#' 
+#' @author Miguel Alvarez \email{kamapu78@@gmail.com}
+#' 
+#' @rdname report_communities
+#' 
+#' @exportMethod report_communities
+#' 
 setGeneric("report_communities",
 		function(veg, ...)
 			standardGeneric("report_communities")
 )
 
-# Method for vegtable objects
+#' @rdname report_communities
+#' 
+#' @aliases report_communities,vegtable-method
+#' 
 setMethod("report_communities", signature(veg="vegtable"),
 		function(veg, bib, filename, title, author, date,
 				date_format="%d-%m-%Y", papersize="a4", keep_rmd=TRUE,
@@ -26,7 +60,11 @@ setMethod("report_communities", signature(veg="vegtable"),
 					paste0("title: \"", title, "\"\n"),
 					paste0("author: \"", author, "\"\n"),
 					paste0("date: \"", format(date, date_format), "\"\n"),
-					"header-includes:\n  - \\usepackage[utf8]{inputenc}\n  - \\usepackage[T1]{fontenc}\n  - \\usepackage{bibentry}\n",
+					paste0("header-includes:\n",
+							"  - \\usepackage[utf8]{inputenc}\n",
+							"  - \\usepackage[T1]{fontenc}\n",
+							"  - \\usepackage{bibentry}\n",
+							"  - \\usepackage{hyperref}\n"),
 					paste0("  - \\nobibliography{", bib,"}\n"),
 					"output:\n  pdf_document:\n    citation_package: natbib\n",
 					paste0("biblio-style: ", biblio_style, "\n"),

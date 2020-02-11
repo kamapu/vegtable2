@@ -1,8 +1,19 @@
-# TODO:   Draw a badge for database version
-# 
-# Author: Miguel Alvarez
-################################################################################
-
+#' @name version_svg
+#' 
+#' @title Draw a SVG badge for database version
+#' 
+#' @description 
+#' Function for convenience.
+#' 
+#' As version the date formatted accordingly but also another text is possible.
+#' 
+#' @param file A character value with the name of the badge without extension.
+#' @param version A character value indicating the version of the database.
+#' 
+#' @author Miguel Alvarez \email{kamapu78@@gmail.com}
+#' 
+#' @export version_svg
+#' 
 version_svg <- function(file, version) {
 	file <- paste0(file, ".svg")
 	write(paste("

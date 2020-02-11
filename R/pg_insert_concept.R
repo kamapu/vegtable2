@@ -1,8 +1,29 @@
-# TODO:   Insert new taxon concept
-# 
-# Author: Miguel Alvarez
-################################################################################
-
+#' @name pg_insert_concept
+#' 
+#' @title Insert names or concepts in PostgreSQL taxonomic lists
+#' 
+#' Insert synonyms to existing taxa in a PostgreSQL version of [taxlist-class]
+#' objects.
+#' 
+#' @details 
+#' This function is updating the tables `taxonNames` and `names2concepts` in
+#' the PostgreSQL version of the database.
+#' 
+#' @param conn A database connection provided by [dbConnect()].
+#' @param taxon_names,taxon_relations,names2concepts,taxon_views,taxon_levels
+#'     Character vectors indicating the name of the respective schemas and
+#'     tables in database.
+#' @param df A data frame with new names and related information (including
+#'     taxon concept ID).
+#' @param clean A logical value indicating cleaning of characters.
+#' @param ... Further arguments passed among methods.
+#' 
+#' @author Miguel Alvarez \email{kamapu78@@gmail.com}
+#' 
+#' @aliases pg_insert_concept insert_concept_swea
+#' 
+#' @export pg_insert_concept
+#' 
 pg_insert_concept <- function(conn, taxon_names, taxon_relations,
 		names2concepts, taxon_views, taxon_levels, df, clean=TRUE, ...) {
 	if(clean)
@@ -49,18 +70,20 @@ pg_insert_concept <- function(conn, taxon_names, taxon_relations,
 		parent_levels <- with(taxa@taxonRelations,
 				as.integer(Level[match(df$Parent, TaxonConceptID)]))
 		if(any(new_levels >= parent_levels))
-			stop("Children cannot be of equal or higher level than the respective parents.")
+			stop(paste("Children cannot be of equal or higher level than",
+							"the respective parents."))
 	}
 	## TODO: Allow the possibility of inserting some taxon traits
 	## Prepare data frame
 	# Check existence of the name combination
-	SQL <- paste0("SELECT \"TaxonUsageID\", \"TaxonName\", \"AuthorName\"", "\n",
-			"FROM \"", paste(taxon_names, collapse="\".\""), "\";")
+	SQL <- paste0("SELECT \"TaxonUsageID\", \"TaxonName\", \"AuthorName\"",
+			"\n", "FROM \"", paste(taxon_names, collapse="\".\""), "\";")
 	db_names <- dbGetQuery(conn, SQL)
 	if(with(df, paste(TaxonName, AuthorName)) %in%
 			with(db_names, paste(TaxonName, AuthorName))) {
 		message(paste0("Taxon name '", with(df, paste(TaxonName, AuthorName)),
-								"' already in database. This name will be recycled.\n"))
+								"' already in database. ",
+								"This name will be recycled.\n"))
 		usage_id <- unlist(db_names[with(db_names,
 										paste(TaxonName, AuthorName)) ==
 						with(df, paste(TaxonName, AuthorName)),

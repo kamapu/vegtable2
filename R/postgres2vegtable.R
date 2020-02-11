@@ -3,6 +3,43 @@
 # Author: Miguel Alvarez
 ################################################################################
 
+
+
+#' @name postgres2vegtable
+#' 
+#' @title Import PostgreSQL databases into vegtable objects
+#' 
+#' @description 
+#' Import and adaption of Postgres tables into objects of class
+#' [vegtable-class].
+#' 
+#' In the case that some schemas are not mentioned, the function assumes such
+#' tables are located in the same schema as the table header. Thus for
+#' databases placed in just one schema, this need to be set only in argument
+#' `header_schema`.
+#' 
+#' @param conn A database connection provided by [dbConnect()].
+#' @param tax_args List of arguments passed to [postgres2taxlist()].
+#' @param header,samples Character vectors indicating the schema and table
+#'     containing header and samples information, respectively.
+#' @param sql_header SQL statement to be used instead of `header`.
+#' @param relations,layers,coverconvert Lists of vectors for the respective
+#'     slots, each containing schema and name of required table.
+#' @param geometry Name of the variable in header containing the geometry of
+#'     the plots.
+#' @param description Named vector with metadata.
+#' @param as_list Logical value indicating whether a list or an object of class
+#'     [vegtable-class] should be returned.
+#' @param ... Further arguments passed among methods
+#' @param get_countries Logical argument, specific for the databases
+#'     'sudamerica' and 'SWEA-Dataveg', indicating whether country information
+#'     should be reimported from integrated map.
+#' @author Miguel Alvarez, \email{kamapu78@@gmail.com}.
+#' 
+#' @rdname postgres2vegtable
+#' 
+#' @export postgres2vegtable
+#' 
 postgres2vegtable <- function(conn, tax_args=list(), header, sql_header,
 		samples, relations=list(), layers=list(), coverconvert=list(), geometry,
 		description, as_list=FALSE, ...) {
@@ -80,7 +117,12 @@ postgres2vegtable <- function(conn, tax_args=list(), header, sql_header,
 ## TODO: Relations and layers can be as subsets
 ## TODO: If using sql statements in wrappers, detect relations not included in header
 
-# Wrappers
+#' @rdname postgres2vegtable
+#' 
+#' @aliases import_sudamerica
+#' 
+#' @export import_sudamerica
+#' 
 import_sudamerica <- function(conn,
 		header=c("sudamerica","header"),
 		samples=c("sudamerica","samples"),
@@ -130,7 +172,12 @@ import_sudamerica <- function(conn,
 	return(veg_obj)
 }
 
-# Wrappers
+#' @rdname postgres2vegtable
+#' 
+#' @aliases import_swea
+#' 
+#' @export import_swea
+#' 
 import_swea <- function(conn,
 		header=c("swea_dataveg","header"),
 		samples=c("swea_dataveg","samples"),

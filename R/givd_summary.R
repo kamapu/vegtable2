@@ -1,8 +1,16 @@
-# TODO:   Statistics for GIVD page
-# 
-# Author: Miguel Alvarez
-###############################################################################
-
+#' @name givd_summary
+#' 
+#' @title GIVD Metadata
+#' 
+#' @description 
+#' Get metadata for the GIVD mask.
+#' 
+#' @param obj A vegtable object.
+#' 
+#' @author Miguel Alvarez \email{kamapu78@@gmail.com}
+#' 
+#' @export givd_summary
+#' 
 givd_summary <- function(obj) {
 	message(paste("## Number of Sources:", length(unique(obj$data_source))))
 	message(paste("## Number of Observations:", nrow(obj@header)))

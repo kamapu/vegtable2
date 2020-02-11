@@ -1,9 +1,36 @@
-# TODO:   Import of taxlist objects from PostgreSQL databases
-# 
-# Author: Miguel Alvarez
-################################################################################
-
-# Main function
+#' @name postgres2taxlist
+#' 
+#' @title Import PostgreSQL databases into taxlist objects
+#' 
+#' @description 
+#' Ad-hoc function for importing Postgres tables into objects of class
+#' [taxlist-class].
+#' 
+#' This function has been modified to a new version of the database.
+#' 
+#' @param conn A database connection provided by [dbConnect()].
+#' @param taxon_names,taxon_relations,taxon_traits,taxon_views Character
+#'     vectors indicating the name of the schema and the table containing the
+#'     information for the respective slots.
+#' @param taxon_levels,names2concepts Character vectors indicating the name of
+#'     schema and table indicating the taxonomic ranks and the correspondence of
+#'     names to taxonomic concepts.
+#' @param subset_levels Logical value indicating whether taxonomic ranks should
+#'     be restricted to the used ones or all ranks available in the database.
+#' @param subset_views Logical value indicating whether to restrict the list of
+#'     views to the used ones or all.
+#' @param as_list Logical value indicating whether the output should be a list
+#'     or a [taxlist-class] object.
+#' @param verbose Logical value, whether messages should be printed or not.
+#' @param ... Further arguments passed among methods. In the two wrappers the
+#'     arguments are passed to `postgres2taxlist`.
+#' 
+#' @author Miguel Alvarez \email{kamapu78@@gmail.com}
+#' 
+#' @rdname postgres2taxlist
+#' 
+#' @export postgres2taxlist
+#' 
 postgres2taxlist <- function(conn, taxon_names, taxon_relations, taxon_traits,
 		taxon_views, taxon_levels, names2concepts, subset_levels=TRUE,
 		subset_views=TRUE, as_list=FALSE, verbose=TRUE, ...) {
@@ -81,7 +108,12 @@ postgres2taxlist <- function(conn, taxon_names, taxon_relations, taxon_traits,
 	}
 }
 
-# Wrappers
+#' @rdname postgres2taxlist
+#' 
+#' @aliases swea_tax
+#' 
+#' @export swea_tax
+#' 
 swea_tax <- function(conn,
 		taxon_names=c("tax_commons","taxonNames"),
 		taxon_relations=c("swea_dataveg","taxonRelations"),
@@ -94,7 +126,12 @@ swea_tax <- function(conn,
 					taxon_views, taxon_levels, names2concepts, ...))
 }
 
-# Wrappers
+#' @rdname postgres2taxlist
+#' 
+#' @aliases sudamerica_tax
+#' 
+#' @export sudamerica_tax
+#' 
 sudamerica_tax <- function(conn,
 		taxon_names=c("tax_commons","taxonNames"),
 		taxon_relations=c("sudamerica","taxonRelations"),

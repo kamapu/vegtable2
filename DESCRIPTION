@@ -19,13 +19,16 @@ Imports:
 	RPostgreSQL,
 	vegdata
 Suggests:
-	devtools
+	devtools,
+	roxygen2
 Description: Extension of 'taxlist' and 'vegtable' for internal purposes.
 License: GPL (>= 2)
 URL: https://github.com/kamapu/vegtable
 BugReports: https://github.com/kamapu/vegtable/issues
+Roxygen: list(markdown = TRUE)
 Collate:
 	'NULLing.R'
+	'imports.R'
 	'get_precision.R'
 	'clone.R'
 	'taxlist2tvlist.R'
@@ -34,10 +37,10 @@ Collate:
 	'pg_insert_concept.R'
 	'pg_insert_synonym.R'
 	'pg_delete_concept.R'
-	'pg_delete_name.R'
 	'pg_merge_concepts.R'
 	'pg_insert_observations.R'
 	'report_communities.R'
 	'get_description.R'
 	'givd_summary.R'
 	'version_svg.R'
+RoxygenNote: 7.0.2

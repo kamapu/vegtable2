@@ -1,3 +1,16 @@
+vegtable2 0.2.0
+===============
+
+### New Features
+
+* Roxygenized version
+
+### Improvements
+
+* Functions adapted to new database structure.
+
+### Bug Fixes
+
 vegtable2 0.1.2
 ===============
 
