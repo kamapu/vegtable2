@@ -1,4 +1,5 @@
 #' @name pg_insert_concept
+#' @rdname pg_insert_concept
 #' 
 #' @title Insert names or concepts in PostgreSQL taxonomic lists
 #' 
@@ -113,7 +114,11 @@ pg_insert_concept <- function(conn, taxon_names, taxon_relations,
 					NameStatus="accepted", stringsAsFactors=FALSE))
 }
 
-# Wrappers
+#' @rdname pg_insert_concept
+#' @aliases insert_concept_swea
+#' 
+#' @export insert_concept_swea
+#' 
 insert_concept_swea <- function(conn,
 		taxon_names=c("tax_commons", "taxonNames"),
 		taxon_relations=c("swea_dataveg", "taxonRelations"),
