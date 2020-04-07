@@ -19,6 +19,17 @@ pg_insert_concept(
   clean = TRUE,
   ...
 )
+
+insert_concept_swea(
+  conn,
+  taxon_names = c("tax_commons", "taxonNames"),
+  taxon_relations = c("swea_dataveg", "taxonRelations"),
+  names2concepts = c("swea_dataveg", "names2concepts"),
+  taxon_views = c("commons", "data_source"),
+  taxon_levels = c("tax_commons", "taxonLevels"),
+  df,
+  ...
+)
 }
 \arguments{
 \item{conn}{A database connection provided by \code{\link[=dbConnect]{dbConnect()}}.}
