@@ -80,6 +80,7 @@ pg_insert_concept <- function(conn, taxon_names, taxon_relations,
 	SQL <- paste0("SELECT \"TaxonUsageID\", \"TaxonName\", \"AuthorName\"",
 			"\n", "FROM \"", paste(taxon_names, collapse="\".\""), "\";")
 	db_names <- dbGetQuery(conn, SQL)
+	# TODO: this will work only for one entry!!!
 	if(with(df, paste(TaxonName, AuthorName)) %in%
 			with(db_names, paste(TaxonName, AuthorName))) {
 		message(paste0("Taxon name '", with(df, paste(TaxonName, AuthorName)),

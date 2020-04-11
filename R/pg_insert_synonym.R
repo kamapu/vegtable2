@@ -47,38 +47,42 @@ pg_insert_synonym <- function(conn, taxon_names, taxon_relations,
 	SQL <-  paste0("SELECT *\n",
 			"FROM \"", paste(names2concepts, collapse="\".\""), "\";\n")
 	tmp_nam2con <- dbGetQuery(conn, SQL)
-	# 1: Check duplicated combinations in 'df'
-	if(any(duplicated(df[,c("TaxonName","AuthorName")])))
-		stop("Duplicated combinations detected in 'df'.")
-	# 2: Check combinations already existing in database
-	if(any(with(df, paste(TaxonName, AuthorName)) %in% with(tmp_names,
-					paste(TaxonName, AuthorName))))
-		message(paste("Some combinations in 'df' already exist in database",
-						"and will be recycled."))
-	# Add recycled usage name IDs
-	
-	df$TaxonUsageID <- with(tmp_names,
-			TaxonUsageID[match(paste(df$TaxonName, df$AuthorName),
-							paste(TaxonName,AuthorName))])
-	# Add new usage IDs
-	if(any(is.na(df$TaxonUsageID))) {
-		df$TaxonUsageID[is.na(df$TaxonUsageID)] <- max(tmp_names$TaxonUsageID) +
-				c(1:sum(is.na(df$TaxonUsageID)))
-	}
-	# Check that the names are not yet in use
+	# 1: Check that the names are not yet in use
 	if(any(df$TaxonUsageID %in% tmp_nam2con$TaxonUsageID))
 		stop("Some of the names in 'df' are already in use.")
-	# 2: Get colnames of Postgres tables
-	description <- get_description(conn)
-	col_names <- with(description,
-			column[schema == taxon_names[1] & table == taxon_names[2]])
-	# Insert to database
-	if(any(!df$TaxonUsageID %in% tmp_nam2con$TaxonUsageID))
-		pgInsert(conn, taxon_names,
-				df[!df$TaxonUsageID %in% tmp_nam2con$TaxonUsageID,col_names])
-	pgInsert(conn, names2concepts,
-			data.frame(df[,c("TaxonUsageID", "TaxonConceptID")],
-					NameStatus="synonym", stringsAsFactors=FALSE))
+	# 2: Check duplicated combinations in 'df'
+	if(any(duplicated(df[,c("TaxonName","AuthorName")])))
+		stop("Duplicated combinations detected in 'df'.")
+	# 3: Check combinations already existing in database (and recycle)
+	if(any(with(df, paste(TaxonName, AuthorName)) %in% with(tmp_names,
+					paste(TaxonName, AuthorName)))) {
+		message(paste("Some combinations in 'df' already exist in database",
+						"and will be recycled."))
+		df2 <- df
+		df2$TaxonUsageID <- with(tmp_names,
+				TaxonUsageID[match(paste(df$TaxonName, df$AuthorName),
+								paste(TaxonName,AuthorName))])
+		df2 <- df2[!is.na(df2$TaxonUsageID),]
+		pgInsert(conn, names2concepts,
+				data.frame(df2[,c("TaxonUsageID", "TaxonConceptID")],
+						NameStatus="synonym", stringsAsFactors=FALSE))
+	}
+	# Add new names
+	if(any(!with(df, paste(TaxonName, AuthorName)) %in% with(tmp_names,
+					paste(TaxonName, AuthorName)))) {
+		df <- df[!with(df, paste(TaxonName, AuthorName)) %in% with(tmp_names,
+					paste(TaxonName, AuthorName)),]
+		df$TaxonUsageID <- max(tmp_names$TaxonUsageID) + c(1:nrow(df))
+		# Get colnames of Postgres tables
+		description <- get_description(conn)
+		col_names <- with(description,
+				column[schema == taxon_names[1] & table == taxon_names[2]])
+		# Insert to database
+		pgInsert(conn, taxon_names, df[,col_names])
+		pgInsert(conn, names2concepts,
+				data.frame(df[,c("TaxonUsageID", "TaxonConceptID")],
+						NameStatus="synonym", stringsAsFactors=FALSE))	
+	}
 	message("DONE")
 }
 

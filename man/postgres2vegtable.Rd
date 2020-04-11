@@ -44,8 +44,8 @@ import_swea(
     soil_texture = c("swea_dataveg", "soil_texture"), community_type = c("commons",
     "community_type"), data_source = c("commons", "data_source"), naturalness =
     c("swea_dataveg", "naturalness"), record_type = c("swea_dataveg", "record_type")),
-  layers = list(veg_layer = c("swea_dataveg", "veg_layer"), spec_miguel = c("specimens",
-    "specimens_miguel")),
+  layers = list(veg_layer = c("swea_dataveg", "veg_layer"), spec_miguel =
+    c("specimens", "specimens_miguel")),
   coverconvert = list(br_bl = c("commons", "br_bl"), b_bbds = c("commons", "b_bbds"),
     ordinal = c("commons", "ordinal")),
   geometry = "plot_centroid",
