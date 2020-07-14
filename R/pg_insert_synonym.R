@@ -57,7 +57,7 @@ pg_insert_synonym <- function(conn, taxon_names, taxon_relations,
 	if(any(with(df, paste(TaxonName, AuthorName)) %in% with(tmp_names,
 					paste(TaxonName, AuthorName)))) {
 		message(paste("Some combinations in 'df' already exist in database",
-						"and will be recycled."))
+						"and will be recycled.\n"))
 		df2 <- df
 		df2$TaxonUsageID <- with(tmp_names,
 				TaxonUsageID[match(paste(df$TaxonName, df$AuthorName),

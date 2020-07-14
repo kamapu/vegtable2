@@ -3,10 +3,10 @@
 #' 
 #' @title Insert names or concepts in PostgreSQL taxonomic lists
 #' 
+#' @description 
 #' Insert synonyms to existing taxa in a PostgreSQL version of [taxlist-class]
 #' objects.
 #' 
-#' @details 
 #' This function is updating the tables `taxonNames` and `names2concepts` in
 #' the PostgreSQL version of the database.
 #' 

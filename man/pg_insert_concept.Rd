@@ -3,10 +3,7 @@
 \name{pg_insert_concept}
 \alias{pg_insert_concept}
 \alias{insert_concept_swea}
-\title{Insert names or concepts in PostgreSQL taxonomic lists
-
-Insert synonyms to existing taxa in a PostgreSQL version of \linkS4class{taxlist}
-objects.}
+\title{Insert names or concepts in PostgreSQL taxonomic lists}
 \usage{
 pg_insert_concept(
   conn,
@@ -45,12 +42,9 @@ taxon concept ID).}
 \item{...}{Further arguments passed among methods.}
 }
 \description{
-Insert names or concepts in PostgreSQL taxonomic lists
-
 Insert synonyms to existing taxa in a PostgreSQL version of \linkS4class{taxlist}
 objects.
-}
-\details{
+
 This function is updating the tables \code{taxonNames} and \code{names2concepts} in
 the PostgreSQL version of the database.
 }
