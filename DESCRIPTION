@@ -42,8 +42,9 @@ Collate:
 	'pg_insert_observations.R'
 	'pg_replace_community.R'
 	'do_backup.R'
+	'read_sql.R'
 	'report_communities.R'
 	'get_description.R'
 	'givd_summary.R'
 	'version_svg.R'
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
