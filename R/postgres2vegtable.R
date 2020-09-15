@@ -1,10 +1,3 @@
-# TODO:   A function for import of the PostgreSQL version of SWEA-Dataveg
-# 
-# Author: Miguel Alvarez
-################################################################################
-
-
-
 #' @name postgres2vegtable
 #' 
 #' @title Import PostgreSQL databases into vegtable objects
@@ -30,10 +23,15 @@
 #' @param description Named vector with metadata.
 #' @param as_list Logical value indicating whether a list or an object of class
 #'     [vegtable-class] should be returned.
-#' @param ... Further arguments passed among methods
+#' @param ... Further arguments passed among methods.
 #' @param get_countries Logical argument, specific for the databases
 #'     'sudamerica' and 'SWEA-Dataveg', indicating whether country information
 #'     should be reimported from integrated map.
+#' @param head_cols Character vector indicating the header variables to be
+#'     imported (except the coordinates).
+#' @param samples_cols Character vector indicating the samples variables to be
+#'     imported.
+#' 
 #' @author Miguel Alvarez, \email{kamapu78@@gmail.com}.
 #' 
 #' @rdname postgres2vegtable
@@ -232,4 +230,43 @@ import_swea <- function(conn,
 		message("DONE")
 	}
 	return(veg_obj)
+}
+
+#' @rdname postgres2vegtable
+#' 
+#' @aliases import_bernice
+#' 
+#' @export import_bernice
+#' 
+
+import_bernice <- function(conn,
+		head_cols=c("ReleveID", "code_trr228", "original_number", "record_date",
+				"plot_size", "data_source", "elevation"),
+		samples_cols=c("record_id", "ReleveID", "quadrant", "TaxonUsageID",
+				"misspelled_name", "cover_percentage", "frequency"),
+		...) {
+	# header
+	Query <- paste0("SELECT \"", paste(head_cols, collapse="\", \""),
+			"\", ST_X(plot_centroid) longitude, ST_Y(plot_centroid) latitude\n",
+			"FROM swea_dataveg.header\n", "WHERE data_source = 98;\n")
+	header <- dbGetQuery(conn, Query)
+	# samples
+	Query <- paste0("SELECT \"", paste(samples_cols, collapse="\", \""), "\"\n",
+			"FROM swea_dataveg.samples\n",
+			"WHERE \"ReleveID\" IN (", paste(header$ReleveID, collapse=","),
+			");\n")
+	samples <- dbGetQuery(conn, Query)
+	# relations
+	relations <- list()
+	# relations: data_source
+	Query <- paste0("SELECT data_source, bibtexkey\n",
+			"FROM commons.data_source\n", "WHERE data_source = 98;\n")
+	relations$data_source <- dbGetQuery(conn, Query)
+	# relations: code_trr228
+	Query <- paste0("SELECT code_trr228, plot_group, locality, elevation, ",
+			"ST_X(centroid) longitude, ST_Y(centroid) latitude\n",
+			"FROM swea_dataveg.code_trr228;\n")
+	relations$code_trr228 <- dbGetQuery(conn, Query)
+	return(new("vegtable", species=swea_tax(conn, ...), relations=relations,
+					header=header, samples=samples))
 }
