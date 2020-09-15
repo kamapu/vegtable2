@@ -4,6 +4,7 @@
 \alias{postgres2vegtable}
 \alias{import_sudamerica}
 \alias{import_swea}
+\alias{import_bernice}
 \title{Import PostgreSQL databases into vegtable objects}
 \usage{
 postgres2vegtable(
@@ -52,6 +53,15 @@ import_swea(
   get_countries = TRUE,
   ...
 )
+
+import_bernice(
+  conn,
+  head_cols = c("ReleveID", "code_trr228", "original_number", "record_date",
+    "plot_size", "data_source", "elevation"),
+  samples_cols = c("record_id", "ReleveID", "quadrant", "TaxonUsageID",
+    "misspelled_name", "cover_percentage", "frequency"),
+  ...
+)
 }
 \arguments{
 \item{conn}{A database connection provided by \code{\link[=dbConnect]{dbConnect()}}.}
@@ -74,11 +84,17 @@ the plots.}
 \item{as_list}{Logical value indicating whether a list or an object of class
 \linkS4class{vegtable} should be returned.}
 
-\item{...}{Further arguments passed among methods}
+\item{...}{Further arguments passed among methods.}
 
 \item{get_countries}{Logical argument, specific for the databases
 'sudamerica' and 'SWEA-Dataveg', indicating whether country information
 should be reimported from integrated map.}
+
+\item{head_cols}{Character vector indicating the header variables to be
+imported (except the coordinates).}
+
+\item{samples_cols}{Character vector indicating the samples variables to be
+imported.}
 }
 \description{
 Import and adaption of Postgres tables into objects of class
