@@ -56,6 +56,9 @@ import_swea(
 
 import_bernice(
   conn,
+  description = c(Title = "Parthenium survey in Lake Baringo", Author =
+    "Bernice Mereina Sainepo", Source = "SWEA-Dataveg (GIVD-AF-00-006)", Version =
+    Sys.Date()),
   head_cols = c("ReleveID", "code_trr228", "original_number", "record_date",
     "plot_size", "data_source", "elevation"),
   samples_cols = c("record_id", "ReleveID", "quadrant", "TaxonUsageID",

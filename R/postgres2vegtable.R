@@ -238,8 +238,12 @@ import_swea <- function(conn,
 #' 
 #' @export import_bernice
 #' 
-
 import_bernice <- function(conn,
+		description=c(
+				Title="Parthenium survey in Lake Baringo",
+				Author="Bernice Mereina Sainepo",
+				Source="SWEA-Dataveg (GIVD-AF-00-006)",
+				Version=Sys.Date()),
 		head_cols=c("ReleveID", "code_trr228", "original_number", "record_date",
 				"plot_size", "data_source", "elevation"),
 		samples_cols=c("record_id", "ReleveID", "quadrant", "TaxonUsageID",
@@ -267,6 +271,6 @@ import_bernice <- function(conn,
 			"ST_X(centroid) longitude, ST_Y(centroid) latitude\n",
 			"FROM swea_dataveg.code_trr228;\n")
 	relations$code_trr228 <- dbGetQuery(conn, Query)
-	return(new("vegtable", species=swea_tax(conn, ...), relations=relations,
-					header=header, samples=samples))
+	return(new("vegtable", description=description, species=swea_tax(conn, ...),
+					relations=relations, header=header, samples=samples))
 }
