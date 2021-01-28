@@ -25,10 +25,21 @@
 #' @rdname db2taxlist
 #' 
 #' @export db2taxlist
+#'
+#' @exportMethod db2taxlist
 #' 
-db2taxlist <- function(conn, taxon_names, taxon_relations, taxon_traits,
-		taxon_levels, taxon_views, names2concepts, subset_levels = TRUE,
-		as_list = FALSE, ...) {
+db2taxlist <- function (conn, ...) {
+	UseMethod("db2taxlist", conn)
+}
+
+#' @rdname db2taxlist
+#' 
+#' @method db2taxlist PostgreSQLConnection
+#' @export 
+#' 
+db2taxlist.PostgreSQLConnection <- function(conn, taxon_names, taxon_relations,
+		taxon_traits, taxon_levels, taxon_views, names2concepts,
+		subset_levels = TRUE, as_list = FALSE, ...) {
 	species_obj <- list()
 	# Import taxon names
 	message("Importing taxon names...")

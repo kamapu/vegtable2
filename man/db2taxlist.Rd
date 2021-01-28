@@ -2,11 +2,14 @@
 % Please edit documentation in R/db2taxlist.R
 \name{db2taxlist}
 \alias{db2taxlist}
+\alias{db2taxlist.PostgreSQLConnection}
 \alias{swea_tax}
 \alias{sam_tax}
 \title{Import relational databases into taxlist objects}
 \usage{
-db2taxlist(
+db2taxlist(conn, ...)
+
+\method{db2taxlist}{PostgreSQLConnection}(
   conn,
   taxon_names,
   taxon_relations,
@@ -44,6 +47,9 @@ sam_tax(
 \arguments{
 \item{conn}{A database connection provided by \code{\link[=dbConnect]{dbConnect()}}.}
 
+\item{...}{Further arguments passed among methods. In the two wrappers the
+arguments are passed to \code{db2taxlist}.}
+
 \item{taxon_names, taxon_relations, taxon_traits, taxon_views}{Character
 vectors indicating the name of the schema and the table containing the
 information for the respective slots.}
@@ -57,9 +63,6 @@ be restricted to the used ones or all ranks available in the database.}
 
 \item{as_list}{Logical value indicating whether the output should be a list
 or a \linkS4class{taxlist} object.}
-
-\item{...}{Further arguments passed among methods. In the two wrappers the
-arguments are passed to \code{db2taxlist}.}
 }
 \description{
 Ad-hoc function for importing Postgres tables into objects of class

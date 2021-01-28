@@ -6,10 +6,8 @@
 # Required packages
 library(devtools)
 
-# Document package
+# Document and Build package
 document()
-
-# Build package
 pkg_loc <- build(path="build")
 
 # Test the package
@@ -49,7 +47,7 @@ check_built(path=pkg_loc)
 ## install()
 
 # Render readme-file.
-render("README.Rmd")
+## render("README.Rmd")
 
 # Render package-site
 ## usethis::use_pkgdown()
