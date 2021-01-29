@@ -16,8 +16,6 @@ Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
 check_built(path=pkg_loc)
 
 
-
-
 ## library(covr)
 ## library(goodpractice)
 ## library(rmarkdown)
