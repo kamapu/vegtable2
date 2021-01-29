@@ -13,10 +13,13 @@ Imports:
     biblioDB,
 	DBI,
 	foreign,
+	methods,
 	RPostgreSQL
 Suggests:
 	devtools,
 	roxygen2
+Remotes:
+    kamapu/biblioDB
 Description: Extension of 'taxlist' and 'vegtable' for own databases.
 License: GPL (>= 2)
 URL: https://github.com/kamapu/vegtable2
