@@ -189,6 +189,7 @@ import_swea <- function(conn,
 			taxon_levels = taxon_levels,
 			names2concepts = names2concepts, ...)
 	# Adding Country codes
+	message("Importing country codes...")
 	if(get_countries) {
 		Query <- paste0("SELECT \"ReleveID\",\"ADM0_A3\"\n",
 				"FROM swea_dataveg.header,commons.countries_map\n",
@@ -202,6 +203,7 @@ import_swea <- function(conn,
 		veg_obj@relations$country_code <- Countries
 	}
 	# Adding Data sources
+	message("Importing data sources...")
 	if(get_data_sources) {
 		data_source <- do.call(read_pg, c(conn = conn, name = "bib_references",
 						bib_args))
@@ -235,8 +237,7 @@ import_sam <- function(conn,
 		header = c("sudamerica","header"),
 		samples = c("sudamerica","samples"),
 		relations = list(
-				community_type = c("commons","community_type"),
-				data_source = c("commons","data_source")
+				community_type = c("commons","community_type")
 		),
 		layers = list(
 				spec_miguel = c("specimens","specimens_miguel")
