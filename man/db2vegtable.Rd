@@ -2,12 +2,15 @@
 % Please edit documentation in R/db2vegtable.R
 \name{db2vegtable}
 \alias{db2vegtable}
+\alias{db2vegtable.PostgreSQLConnection}
 \alias{import_swea}
 \alias{import_sam}
 \alias{import_bernice}
 \title{Import PostgreSQL databases into vegtable objects}
 \usage{
-db2vegtable(
+db2vegtable(conn, ...)
+
+\method{db2vegtable}{PostgreSQLConnection}(
   conn,
   header,
   sql_header,
@@ -84,6 +87,8 @@ import_bernice(
 \arguments{
 \item{conn}{A database connection provided by \code{\link[=dbConnect]{dbConnect()}}.}
 
+\item{...}{Further arguments passed to \code{\link[=db2taxlist]{db2taxlist()}}.}
+
 \item{header, samples}{Character vectors indicating the schema and table
 containing header and samples information, respectively.}
 
@@ -102,8 +107,6 @@ the plots.}
 
 \item{as_list}{Logical value indicating whether a list or an object of class
 \linkS4class{vegtable} should be returned.}
-
-\item{...}{Further arguments passed to \code{\link[=db2taxlist]{db2taxlist()}}.}
 
 \item{get_countries}{Logical argument, specific for the databases
 'sudamerica' and 'SWEA-Dataveg', indicating whether country information

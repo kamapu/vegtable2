@@ -23,6 +23,8 @@
 #'     passed to [file()].
 #' @param ... Further arguments passed to [file()].
 #' 
+#' @export 
+#' 
 draw_badge <- function(id, path, version = Sys.Date(), link, type = "version",
 		encoding = "UTF-8", ...) {
 	type <- pmatch(tolower(type), c("version", "givd"))

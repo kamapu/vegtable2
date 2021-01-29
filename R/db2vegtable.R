@@ -42,8 +42,20 @@
 #' 
 #' @export db2vegtable
 #' 
-db2vegtable <- function(conn, header, sql_header, samples, relations, layers,
-		coverconvert, geometry, description, as_list = FALSE, ...) {
+#' @exportMethod db2vegtable
+#' 
+db2vegtable <- function(conn, ...) {
+	UseMethod("db2vegtable", conn)
+}
+
+#' @rdname db2vegtable
+#' 
+#' @method db2vegtable PostgreSQLConnection
+#' @export 
+#' 
+db2vegtable.PostgreSQLConnection <- function(conn, header, sql_header, samples,
+		relations, layers, coverconvert, geometry, description, as_list = FALSE,
+		...) {
 	veg_obj <- list()
 	# description
 	if(!missing(description)) veg_obj$description <- description else
