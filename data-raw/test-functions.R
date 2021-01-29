@@ -10,3 +10,6 @@ library(vegtable2)
 
 draw_badge("AF-00-006", "data-raw/swea_v.svg", link = "www.mysite.com",
 		type = "version")
+
+draw_badge("AF-00-006", "data-raw/swea_givd.svg", link = "www.mysite.com",
+		type = "GIVD")
