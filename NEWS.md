@@ -1,3 +1,10 @@
+vegtable2 0.2.1
+===============
+
+### New Features
+
+* All the package have been reshaped for new database structure
+
 vegtable2 0.2.0
 ===============
 
@@ -8,8 +15,6 @@ vegtable2 0.2.0
 ### Improvements
 
 * Functions adapted to new database structure.
-
-### Bug Fixes
 
 vegtable2 0.1.2
 ===============

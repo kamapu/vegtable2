@@ -1,6 +1,6 @@
-#' @name postgres2taxlist
+#' @name db2taxlist
 #' 
-#' @title Import PostgreSQL databases into taxlist objects
+#' @title Import relational databases into taxlist objects
 #' 
 #' @description 
 #' Ad-hoc function for importing Postgres tables into objects of class
@@ -17,33 +17,37 @@
 #'     names to taxonomic concepts.
 #' @param subset_levels Logical value indicating whether taxonomic ranks should
 #'     be restricted to the used ones or all ranks available in the database.
-#' @param subset_views Logical value indicating whether to restrict the list of
-#'     views to the used ones or all.
 #' @param as_list Logical value indicating whether the output should be a list
 #'     or a [taxlist-class] object.
-#' @param verbose Logical value, whether messages should be printed or not.
 #' @param ... Further arguments passed among methods. In the two wrappers the
-#'     arguments are passed to `postgres2taxlist`.
+#'     arguments are passed to `db2taxlist`.
 #' 
-#' @author Miguel Alvarez \email{kamapu78@@gmail.com}
+#' @rdname db2taxlist
 #' 
-#' @rdname postgres2taxlist
+#' @export db2taxlist
+#'
+#' @exportMethod db2taxlist
 #' 
-#' @export postgres2taxlist
+db2taxlist <- function (conn, ...) {
+	UseMethod("db2taxlist", conn)
+}
+
+#' @rdname db2taxlist
 #' 
-postgres2taxlist <- function(conn, taxon_names, taxon_relations, taxon_traits,
-		taxon_views, taxon_levels, names2concepts, subset_levels=TRUE,
-		subset_views=TRUE, as_list=FALSE, verbose=TRUE, ...) {
+#' @method db2taxlist PostgreSQLConnection
+#' @export 
+#' 
+db2taxlist.PostgreSQLConnection <- function(conn, taxon_names, taxon_relations,
+		taxon_traits, taxon_levels, taxon_views, names2concepts,
+		subset_levels = TRUE, as_list = FALSE, ...) {
 	species_obj <- list()
 	# Import taxon names
-	if(verbose)
-		message("Importing taxon names...")
+	message("Importing taxon names...")
 	SQL <- paste0("SELECT *\n",
 			"FROM \"", paste(taxon_names, collapse="\".\""), "\";\n")
 	species_obj$taxonNames <- dbGetQuery(conn, SQL)
 	# Import taxon concepts
-	if(verbose)
-		message("Importing taxon concepts...")
+	message("Importing taxon concepts...")
 	SQL <- paste0("SELECT *\n",
 			"FROM \"", paste(taxon_relations, collapse="\".\""), "\";\n")
 	species_obj$taxonRelations <- dbGetQuery(conn, SQL)
@@ -84,20 +88,29 @@ postgres2taxlist <- function(conn, taxon_names, taxon_relations, taxon_traits,
 		species_obj$taxonTraits <- dbGetQuery(conn, SQL)
 	} else species_obj$taxonTraits <- data.frame(TaxonConceptID=integer(0))
 	# Import taxon views
-	if(verbose)
-		message("Importing taxon views...")
-	SQL <-  paste0("SELECT *\n",
-			"FROM \"", paste(taxon_views, collapse="\".\""), "\";\n")
-	species_obj$taxonViews <- dbGetQuery(conn, SQL)
-	colnames(species_obj$taxonViews)[colnames(species_obj$taxonViews) ==
-					"data_source"] <- "ViewID"
-	if(subset_views)
-		species_obj$taxonViews <- species_obj$taxonViews[
-				species_obj$taxonViews$ViewID %in%
-						species_obj$taxonRelations$ViewID,]
-	if(verbose)
-		message("DONE")
-	if(as_list) return(species_obj) else {
+	message("Importing taxon views...")
+	species_obj$taxonViews <- biblioDB::read_pg(conn, taxon_views)
+	species_obj$taxonViews <- with(species_obj, {
+				taxonViews <- taxonViews[taxonViews$bibtexkey %in%
+								taxonRelations$view_key, ]
+				taxonViews <- taxonViews[ , apply(taxonViews, 2,
+								function(x) !all(is.na(x)))]
+				taxonViews
+			})
+	# Replace idx for taxon views
+	species_obj$taxonViews$ViewID <- seq_along(species_obj$taxonViews[ , 1])
+	species_obj$taxonRelations$ViewID <- with(species_obj,
+			taxonViews[match(taxonRelations$view_key, taxonViews$bibtexkey),
+					"ViewID"])
+	# Delete column view_key from output
+	species_obj$taxonRelations <- with(species_obj, taxonRelations[ ,
+					colnames(taxonRelations) != "view_key"])
+	# Set ViewID at the beginning of table
+	species_obj$taxonViews <- with(species_obj, taxonViews[ ,
+					c("ViewID", colnames(taxonViews)[colnames(taxonViews) !=
+											"ViewID"])])
+	message("DONE!\n")
+	if(as_list) invisible(species_obj) else {
 		species_obj <- with(species_obj,
 				new("taxlist",
 						taxonNames=clean_strings(taxonNames),
@@ -108,31 +121,33 @@ postgres2taxlist <- function(conn, taxon_names, taxon_relations, taxon_traits,
 	}
 }
 
-#' @rdname postgres2taxlist
+#' @rdname db2taxlist
 #' 
 #' @aliases swea_tax
 #' 
 #' @export swea_tax
 #' 
 swea_tax <- function(conn,
-		taxon_names=c("tax_commons","taxonNames"),
-		taxon_relations=c("swea_dataveg","taxonRelations"),
-		taxon_traits=c("swea_dataveg","taxonTraits"),
-		taxon_views=c("commons","data_source"),
-		taxon_levels=c("tax_commons","taxonLevels"),
-		names2concepts=c("swea_dataveg","names2concepts"),
+		taxon_names = c("tax_commons","taxonNames"),
+		taxon_relations = c("swea_dataveg","taxonRelations"),
+		taxon_traits = c("swea_dataveg","taxonTraits"),
+		taxon_views = "bib_references",
+		taxon_levels = c("tax_commons","taxonLevels"),
+		names2concepts = c("swea_dataveg","names2concepts"),
 		...) {
-	return(postgres2taxlist(conn, taxon_names, taxon_relations, taxon_traits,
-					taxon_views, taxon_levels, names2concepts, ...))
+	db2taxlist(conn = conn, taxon_names = taxon_names,
+			taxon_relations = taxon_relations, taxon_traits = taxon_traits,
+			taxon_views = taxon_views, taxon_levels = taxon_levels,
+			names2concepts = names2concepts, ...)
 }
 
-#' @rdname postgres2taxlist
+#' @rdname db2taxlist
 #' 
-#' @aliases sudamerica_tax
+#' @aliases sam_tax
 #' 
-#' @export sudamerica_tax
+#' @export sam_tax
 #' 
-sudamerica_tax <- function(conn,
+sam_tax <- function(conn,
 		taxon_names=c("tax_commons","taxonNames"),
 		taxon_relations=c("sudamerica","taxonRelations"),
 		taxon_traits=c("sudamerica","taxonTraits"),
@@ -140,6 +155,8 @@ sudamerica_tax <- function(conn,
 		taxon_levels=c("tax_commons","taxonLevels"),
 		names2concepts=c("sudamerica","names2concepts"),
 		...) {
-	return(postgres2taxlist(conn, taxon_names, taxon_relations, taxon_traits,
-					taxon_views, taxon_levels, names2concepts, ...))
+	db2taxlist(conn = conn, taxon_names = taxon_names,
+			taxon_relations = taxon_relations, taxon_traits = taxon_traits,
+			taxon_views = taxon_views, taxon_levels = taxon_levels,
+			names2concepts = names2concepts, ...)
 }

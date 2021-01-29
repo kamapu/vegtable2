@@ -3,16 +3,25 @@
 # Author: Miguel Alvarez
 ################################################################################
 
-# Needed packages
+# Required packages
 library(devtools)
-library(covr)
-library(goodpractice)
-library(rmarkdown)
-library(knitr)
-library(pkgdown)
 
-# Document package
+# Document and Build package
 document()
+pkg_loc <- build(path="build")
+
+# Test the package
+## Sys.setenv(LANG="en_US.iso88591")
+Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
+check_built(path=pkg_loc)
+
+
+## library(covr)
+## library(goodpractice)
+## library(rmarkdown)
+## library(knitr)
+## library(pkgdown)
+
 
 # Report coverage
 ## report()
@@ -29,13 +38,6 @@ document()
 # Check application of good practices
 ## gp()
 
-# Build package
-pkg_loc <- build(path="build")
-
-# Test the package
-## Sys.setenv(LANG="en_US.iso88591")
-Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
-check_built(path=pkg_loc)
 
 # After check ------------------------------------------------------------------
 
@@ -43,7 +45,7 @@ check_built(path=pkg_loc)
 ## install()
 
 # Render readme-file.
-render("README.Rmd")
+## render("README.Rmd")
 
 # Render package-site
 ## usethis::use_pkgdown()
