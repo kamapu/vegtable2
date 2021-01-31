@@ -54,8 +54,7 @@ import_sam(
   conn,
   header = c("sudamerica", "header"),
   samples = c("sudamerica", "samples"),
-  relations = list(community_type = c("commons", "community_type"), data_source =
-    c("commons", "data_source")),
+  relations = list(community_type = c("commons", "community_type")),
   layers = list(spec_miguel = c("specimens", "specimens_miguel")),
   coverconvert = list(br_bl = c("commons", "br_bl"), b_bbds = c("commons", "b_bbds"),
     ordinal = c("commons", "ordinal")),

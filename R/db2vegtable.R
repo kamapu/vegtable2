@@ -69,7 +69,11 @@ db2vegtable.PostgreSQLConnection <- function(conn, header, sql_header, samples,
 				"FROM \"", paste0(header, collapse = "\".\""), "\";\n")
 		veg_obj$header <- dbGetQuery(conn, Query)
 	} else {
-		if(!missing(geometry)) {
+		if(!missing(sql_header)) {
+			if(!missing(geometry))
+				warning("Argument in parameter 'geometry' will be ignored!")
+			veg_obj$header <- dbGetQuery(conn, sql_header)
+		} else {
 			Query <- paste0("SELECT *\n",
 					"FROM information_schema.columns\n",
 					"WHERE table_schema = '", header[1], "'\n",
@@ -83,8 +87,6 @@ db2vegtable.PostgreSQLConnection <- function(conn, header, sql_header, samples,
 					"\") latitude\n",
 					"FROM \"", paste(header, collapse = "\".\""), "\";\n")
 			veg_obj$header <- dbGetQuery(conn, Query)
-		} else {
-			veg_obj$header <- dbGetQuery(conn, sql_header)
 		}
 	}
 	# samples
@@ -179,15 +181,16 @@ import_swea <- function(conn,
 		taxon_levels = c("tax_commons","taxonLevels"),
 		names2concepts = c("swea_dataveg","names2concepts"),
 		...) {
-	# Final object	
-	veg_obj <- db2vegtable(conn = conn, header = header, samples = samples,
-			relations = relations, layers = layers,
-			coverconvert = coverconvert, geometry = geometry,
-			taxon_names = taxon_names,
-			taxon_relations = taxon_relations,
-			taxon_traits = taxon_traits, taxon_views = taxon_views,
-			taxon_levels = taxon_levels,
-			names2concepts = names2concepts, ...)
+	# Final object
+	message("Importing vegtable body...")
+	suppressMessages(veg_obj <- db2vegtable(conn = conn, header = header,
+					samples = samples, relations = relations, layers = layers,
+					coverconvert = coverconvert, geometry = geometry,
+					taxon_names = taxon_names,
+					taxon_relations = taxon_relations,
+					taxon_traits = taxon_traits, taxon_views = taxon_views,
+					taxon_levels = taxon_levels,
+					names2concepts = names2concepts, ...))
 	# Adding Country codes
 	message("Importing country codes...")
 	if(get_countries) {
@@ -224,6 +227,7 @@ import_swea <- function(conn,
 						colnames(data_source)[colnames(data_source) !=
 										"data_source"])]
 	}
+	message("DONE!\n")
 	return(veg_obj)
 }
 
