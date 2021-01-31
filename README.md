@@ -5,8 +5,10 @@
 
 # vegtable2
 
-[![Travis Build
-Status](https://travis-ci.org/kamapu/vegtable2.svg?branch=master)](https://travis-ci.org/kamapu/vegtable2)
+<!-- badges: start -->
+
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/vegtable2)](https://cran.r-project.org/package=vegtable2)
+<!-- badges: end -->
 
 This is a package with functions for the internal use and adapted to own
 purposes. The functions included here are extensions to `taxlist`
