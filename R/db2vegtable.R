@@ -195,8 +195,10 @@ import_swea <- function(conn,
 	message("Importing country codes...")
 	if(get_countries) {
 		Query <- paste0("SELECT \"ReleveID\",\"ADM0_A3\"\n",
-				"FROM swea_dataveg.header,commons.countries_map\n",
-				"WHERE ST_Intersects(commons.countries_map.unit,swea_dataveg.header.plot_centroid);\n")
+				"FROM \"", paste0(header, collapse = "\".\""),
+				"\",commons.countries_map\n",
+				"WHERE ST_Intersects(commons.countries_map.unit,\"",
+				paste0(header, collapse = "\".\""), "\".plot_centroid);\n")
 		Countries <- dbGetQuery(conn, Query)
 		veg_obj@header$country_code <- with(Countries,
 				ADM0_A3[match(veg_obj@header$ReleveID, ReleveID)])
