@@ -7,14 +7,21 @@
 \usage{
 pg_merge_concepts(conn, ...)
 
-\method{pg_merge_concepts}{PostgreSQLConnection}(conn, names2concepts, taxon_relations, concept_id, ...)
+\method{pg_merge_concepts}{PostgreSQLConnection}(
+  conn,
+  names2concepts,
+  taxon_relations,
+  taxon_traits,
+  concept_id,
+  ...
+)
 }
 \arguments{
 \item{conn}{A database connection provided by \code{\link[=dbConnect]{dbConnect()}}.}
 
 \item{...}{Further arguments passed among methods.}
 
-\item{taxon_relations, names2concepts}{Character vectors containing the name
+\item{taxon_relations, taxon_traits, names2concepts}{Character vectors containing the name
 of the schema and for the respective information.}
 
 \item{concept_id}{ID of taxon concepts to be merged.}

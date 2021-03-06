@@ -12,7 +12,7 @@
 #' databases.
 #' 
 #' @param conn A database connection provided by [dbConnect()].
-#' @param taxon_relations,names2concepts Character vectors containing the name
+#' @param taxon_relations,taxon_traits,names2concepts Character vectors containing the name
 #'     of the schema and for the respective information.
 #' @param concept_id ID of taxon concepts to be merged.
 #' @param ... Further arguments passed among methods.
@@ -34,7 +34,7 @@ pg_merge_concepts <- function (conn, ...) {
 #' @export 
 #' 
 pg_merge_concepts.PostgreSQLConnection <- function(conn, names2concepts,
-		taxon_relations, concept_id, ...) {
+		taxon_relations, taxon_traits, concept_id, ...) {
 	if(length(concept_id) < 2)
 		stop("Argument 'concept_id' have to be of length 2 or higher.")
 	# change status of names
@@ -56,6 +56,12 @@ pg_merge_concepts.PostgreSQLConnection <- function(conn, names2concepts,
 			"\"\n",
 			"SET \"Parent\" = ", concept_id[1], "\n",
 			"WHERE \"Parent\" in (", paste(concept_id[-1], collapse=","),");\n")
+	dbSendQuery(conn, Query)
+	# delete from taxonTraits before deleting concept
+	Query <- paste0("DELETE FROM \"",
+			paste0(taxon_traits, collapse = "\".\""), "\"\n",
+			"WHERE \"TaxonConceptID\" in (",
+			paste(concept_id[-1], collapse=","),");\n")
 	dbSendQuery(conn, Query)
 	# delete old concepts
 	Query <- paste0("DELETE FROM \"",
