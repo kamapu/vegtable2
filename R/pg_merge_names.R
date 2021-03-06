@@ -19,6 +19,7 @@
 #' 
 #' @rdname pg_merge_names
 #' 
+#' @export pg_merge_names
 #' @exportMethod pg_merge_names
 #' 
 pg_merge_names <- function (conn, ...) {

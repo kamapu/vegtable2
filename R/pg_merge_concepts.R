@@ -21,6 +21,7 @@
 #' 
 #' @rdname pg_merge_concepts
 #' 
+#' @export pg_merge_concepts
 #' @exportMethod pg_merge_concepts
 #' 
 pg_merge_concepts <- function (conn, ...) {
