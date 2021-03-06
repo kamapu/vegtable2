@@ -15,12 +15,25 @@
 #'     containing taxon names.
 #' @param schemas Character vector indicating the schemas containing the
 #'     respective databases sharing taxon names.
+#' @param ... Further arguments passed among methods.
 #' 
-#' @export pg_merge_names
+#' @rdname pg_merge_names
 #' 
-pg_merge_names <- function(conn, new_id, old_id,
+#' @exportMethod pg_merge_names
+#' 
+pg_merge_names <- function (conn, ...) {
+	UseMethod("pg_merge_names", conn)
+}
+
+#' @rdname pg_merge_names
+#' 
+#' @method pg_merge_names PostgreSQLConnection
+#' @export 
+#' 
+pg_merge_names.PostgreSQLConnection <- function(conn, new_id, old_id,
 		taxon_names = c("tax_commons", "taxonNames"),
-		schemas=c("swea_dataveg","sudamerica")) {
+		schemas=c("swea_dataveg","sudamerica"),
+		...) {
 	# Pre-check
 	if(length(new_id) > 1)
 		stop("Length > 1 is not allowed for argument 'new_id'")

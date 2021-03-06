@@ -1,5 +1,5 @@
 #' @importFrom methods new
-#' @importFrom DBI dbGetQuery
+#' @importFrom DBI dbGetQuery dbSendQuery
 #' @importFrom biblioDB read_pg
 #' @importFrom taxlist clean_strings
 #' @importClassesFrom RPostgreSQL PostgreSQLConnection
