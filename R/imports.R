@@ -2,6 +2,7 @@
 #' @importFrom DBI dbGetQuery dbSendQuery
 #' @importFrom biblioDB read_pg
 #' @importFrom taxlist clean_strings
+#' @importFrom rpostgis pgInsert
 #' @importClassesFrom RPostgreSQL PostgreSQLConnection
 #' @importClassesFrom taxlist taxlist
 #' @importClassesFrom vegtable vegtable

@@ -26,10 +26,22 @@
 #' 
 #' @author Miguel Alvarez \email{kamapu78@@gmail.com}
 #' 
-#' @export pg_insert_observations
+#' @rdname pg_insert_observations
 #' 
-pg_insert_observations <- function(conn, samples, header, names2concepts,
-		db_samples, db_header, geom, ...) {
+#' @export pg_insert_observations
+#' @exportMethod pg_insert_observations
+#' 
+pg_insert_observations <- function (conn, ...) {
+	UseMethod("pg_insert_observations", conn)
+}
+
+#' @rdname pg_insert_observations
+#' 
+#' @method pg_insert_observations PostgreSQLConnection
+#' @export 
+#' 
+pg_insert_observations.PostgreSQLConnection <- function(conn, samples, header,
+		names2concepts, db_samples, db_header, geom, ...) {
 	# Control occurrence of variables
 	if(!all(c("ReleveID","TaxonUsageID") %in% colnames(samples)))
 		stop("'ReleveID' and 'TaxonUsageID' are mandatory variables in 'samples'.")

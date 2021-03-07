@@ -14,7 +14,8 @@ Imports:
 	DBI,
 	foreign,
 	methods,
-	RPostgreSQL
+	RPostgreSQL,
+	rpostgis
 Suggests:
 	devtools,
 	roxygen2
