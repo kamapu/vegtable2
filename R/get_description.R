@@ -15,19 +15,17 @@
 #' 
 #' @rdname get_description
 #' 
-#' @export get_description
-#' @exportMethod get_description
-#' 
+#' @export
 get_description <- function (conn, ...) {
 	UseMethod("get_description", conn)
 }
 
 
 #' @rdname get_description
+#'
+#' @aliases get_description,PostgreSQLConnection-method
 #' 
-#' @method get_description PostgreSQLConnection
-#' @export 
-#' 
+#' @export
 get_description.PostgreSQLConnection <- function(conn, ...) {
 	Query <- paste0("SELECT c.table_schema,c.table_name,c.column_name,",
 			"c.data_type,c.is_nullable,c.numeric_precision,c.numeric_scale,",

@@ -40,19 +40,13 @@
 #' 
 #' @rdname db2vegtable
 #' 
-#' @export db2vegtable
-#' 
-#' @exportMethod db2vegtable
-#' 
+#' @export
 db2vegtable <- function(conn, ...) {
 	UseMethod("db2vegtable", conn)
 }
 
 #' @rdname db2vegtable
-#' 
-#' @method db2vegtable PostgreSQLConnection
-#' @export 
-#' 
+#' @export
 db2vegtable.PostgreSQLConnection <- function(conn, header, sql_header, samples,
 		relations, layers, coverconvert, geometry, description, as_list = FALSE,
 		...) {
@@ -147,8 +141,7 @@ db2vegtable.PostgreSQLConnection <- function(conn, header, sql_header, samples,
 #' 
 #' @aliases import_swea
 #' 
-#' @export import_swea
-#' 
+#' @export
 import_swea <- function(conn,
 		header = c("swea_dataveg","header"),
 		samples = c("swea_dataveg","samples"),
@@ -237,8 +230,7 @@ import_swea <- function(conn,
 #' 
 #' @aliases import_sam
 #' 
-#' @export import_sam
-#' 
+#' @export
 import_sam <- function(conn,
 		header = c("sudamerica","header"),
 		samples = c("sudamerica","samples"),
@@ -280,8 +272,7 @@ import_sam <- function(conn,
 #' 
 #' @aliases import_bernice
 #' 
-#' @export import_bernice
-#' 
+#' @export
 import_bernice <- function(conn,
 		description = c(
 				Title = "Parthenium survey in Lake Baringo",

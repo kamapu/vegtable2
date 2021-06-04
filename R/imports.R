@@ -1,7 +1,7 @@
 #' @importFrom methods new
 #' @importFrom DBI dbGetQuery dbSendQuery
 #' @importFrom biblioDB read_pg
-#' @importFrom taxlist clean_strings
+#' @importFrom taxlist accepted_name clean_strings merge_taxa
 #' @importFrom rpostgis pgInsert
 #' @importClassesFrom RPostgreSQL PostgreSQLConnection
 #' @importClassesFrom taxlist taxlist

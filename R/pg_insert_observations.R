@@ -28,18 +28,16 @@
 #' 
 #' @rdname pg_insert_observations
 #' 
-#' @export pg_insert_observations
-#' @exportMethod pg_insert_observations
-#' 
+#' @export
 pg_insert_observations <- function (conn, ...) {
 	UseMethod("pg_insert_observations", conn)
 }
 
 #' @rdname pg_insert_observations
 #' 
-#' @method pg_insert_observations PostgreSQLConnection
-#' @export 
+#' @aliases pg_insert_observations,PostgreSQLConnection-method
 #' 
+#' @export
 pg_insert_observations.PostgreSQLConnection <- function(conn, samples, header,
 		names2concepts, db_samples, db_header, geom, ...) {
 	# Control occurrence of variables

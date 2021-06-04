@@ -24,19 +24,13 @@
 #' 
 #' @rdname db2taxlist
 #' 
-#' @export db2taxlist
-#'
-#' @exportMethod db2taxlist
-#' 
+#' @export
 db2taxlist <- function (conn, ...) {
 	UseMethod("db2taxlist", conn)
 }
 
 #' @rdname db2taxlist
-#' 
-#' @method db2taxlist PostgreSQLConnection
 #' @export 
-#' 
 db2taxlist.PostgreSQLConnection <- function(conn, taxon_names, taxon_relations,
 		taxon_traits, taxon_levels, taxon_views, names2concepts,
 		subset_levels = TRUE, as_list = FALSE, ...) {
@@ -125,8 +119,7 @@ db2taxlist.PostgreSQLConnection <- function(conn, taxon_names, taxon_relations,
 #' 
 #' @aliases swea_tax
 #' 
-#' @export swea_tax
-#' 
+#' @export
 swea_tax <- function(conn,
 		taxon_names = c("tax_commons","taxonNames"),
 		taxon_relations = c("swea_dataveg","taxonRelations"),
@@ -145,8 +138,7 @@ swea_tax <- function(conn,
 #' 
 #' @aliases sam_tax
 #' 
-#' @export sam_tax
-#' 
+#' @export
 sam_tax <- function(conn,
 		taxon_names=c("tax_commons","taxonNames"),
 		taxon_relations=c("sudamerica","taxonRelations"),
