@@ -3,6 +3,7 @@
 \name{pg_insert_observations}
 \alias{pg_insert_observations}
 \alias{pg_insert_observations.PostgreSQLConnection}
+\alias{pg_insert_observations,PostgreSQLConnection-method}
 \title{Insert plots and samples in PostgreSQL}
 \usage{
 pg_insert_observations(conn, ...)

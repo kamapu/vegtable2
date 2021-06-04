@@ -3,6 +3,7 @@
 \name{get_description}
 \alias{get_description}
 \alias{get_description.PostgreSQLConnection}
+\alias{get_description,PostgreSQLConnection-method}
 \title{Produce a table of all variables from a database}
 \usage{
 get_description(conn, ...)
