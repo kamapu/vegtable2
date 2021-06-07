@@ -2,10 +2,10 @@
 % Please edit documentation in R/accepted_name.R
 \name{accepted_name}
 \alias{accepted_name}
-\alias{accepted_name,PostgreSQLConnection,integer-method}
+\alias{accepted_name,PostgreSQLConnection,numeric-method}
 \title{Switch accepted names by synonyms in a taxon}
 \usage{
-\S4method{accepted_name}{PostgreSQLConnection,integer}(taxlist, ConceptID, accepted, names2concepts, ...)
+\S4method{accepted_name}{PostgreSQLConnection,numeric}(taxlist, ConceptID, accepted, names2concepts, ...)
 }
 \arguments{
 \item{taxlist}{An object of class \linkS4class{PostgreSQLConnection}.}

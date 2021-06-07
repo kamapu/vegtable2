@@ -6,6 +6,7 @@
 #' @importClassesFrom RPostgreSQL PostgreSQLConnection
 #' @importClassesFrom taxlist taxlist
 #' @importClassesFrom vegtable vegtable
-#' 
+#' @import taxlist
+#' @import vegtable
 NULL
 # TODO: replace read_pg for a general function working with any DB

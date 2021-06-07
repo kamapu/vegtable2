@@ -15,12 +15,12 @@
 #'     schema and the name of the table relating names with taxon concepts.
 #' @param ... Further arguments passed among methods.
 #' 
-#' @aliases accepted_name,PostgreSQLConnection,integer-method
+#' @aliases accepted_name,PostgreSQLConnection,numeric-method
 #' 
 #' @exportMethod accepted_name 
 #' 
 setMethod("accepted_name", signature(taxlist = "PostgreSQLConnection",
-				ConceptID = "integer"),
+				ConceptID = "numeric"),
 		function(taxlist, ConceptID, accepted, names2concepts, ...) {
 			# Get list of names and check
 			Query <- paste0("SELECT \"TaxonUsageID\"\n",
