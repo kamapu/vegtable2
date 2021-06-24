@@ -109,7 +109,9 @@ db2taxlist.PostgreSQLConnection <- function(conn, taxon_names, taxon_relations,
 				new("taxlist",
 						taxonNames=clean_strings(taxonNames),
 						taxonRelations=clean_strings(taxonRelations),
-						taxonViews=clean_strings(taxonViews),
+						## TODO: clean_strings to other objects
+						## taxonViews=clean_strings(taxonViews),
+						taxonViews=taxonViews,
 						taxonTraits=clean_strings(taxonTraits)))
 		return(species_obj)
 	}
