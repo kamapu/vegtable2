@@ -49,12 +49,13 @@ setMethod("merge_names", signature(object = "PostgreSQLConnection"),
 			}
 			n2c <- sapply(n2c, function(x, new, old)
 						(new %in% x$TaxonUsageID) & (old %in% x$TaxonUsageID),
-					new=new_id, old=old_id)
+					new = new_id, old = old_id)
 			if(any(n2c))
 				stop(paste0("Replacement will violate double entries ",
 								"for names in dataset(s): '",
 								paste(names(n2c)[n2c],
 										collapse="' '"), "'"))
+			# TODO: delete for existing entries
 			# 1: Changes at 'names2concepts'
 			message("Updating 'names2concepts' tables...")
 			for(i in 1:length(schemas)) {
