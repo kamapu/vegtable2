@@ -42,8 +42,8 @@ insert_concept.PostgreSQLConnection <- function(conn, taxon_names,
 		stop(paste("Column 'TaxonConceptID' detected in 'df'.",
 						"Use 'insert_synonym' instead"))
 	taxa <- db2taxlist(conn, taxon_names, taxon_relations,
-			names2concepts=names2concepts, taxon_views=taxon_views,
-			taxon_levels=taxon_levels, verbose=FALSE, ...)
+			names2concepts = names2concepts, taxon_views = taxon_views,
+			taxon_levels = taxon_levels, verbose = FALSE, ...)
 	# Reimport views
 	SQL <-  paste0("SELECT *\n",
 			"FROM \"", paste(taxon_views, collapse="\".\""), "\";\n")
@@ -135,7 +135,7 @@ insert_concept.PostgreSQLConnection <- function(conn, taxon_names,
 #' 
 #' @export 
 insert_concept_swea <- function (conn, ...) {
-	UseMethod("insert_concept", conn)
+	UseMethod("insert_concept_swea", conn)
 }
 
 		
@@ -144,11 +144,11 @@ insert_concept_swea <- function (conn, ...) {
 #' 
 #' @export
 insert_concept_swea.PostgreSQLConnection <- function(conn,
-		taxon_names=c("tax_commons", "taxonNames"),
-		taxon_relations=c("swea_dataveg", "taxonRelations"),
-		names2concepts=c("swea_dataveg", "names2concepts"),
-		taxon_views=c("commons","data_source"),
-		taxon_levels=c("tax_commons","taxonLevels"),
+		taxon_names = c("tax_commons", "taxonNames"),
+		taxon_relations = c("swea_dataveg", "taxonRelations"),
+		names2concepts = c("swea_dataveg", "names2concepts"),
+		taxon_views = c("commons","data_source"),
+		taxon_levels = c("tax_commons","taxonLevels"),
 		df, ...) {
 	insert_concept(conn, taxon_names, taxon_relations, names2concepts,
 			taxon_views, taxon_levels, df, ...)
