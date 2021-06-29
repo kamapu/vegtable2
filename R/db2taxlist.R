@@ -37,18 +37,18 @@ db2taxlist.PostgreSQLConnection <- function(conn, taxon_names, taxon_relations,
 	species_obj <- list()
 	# Import taxon names
 	message("Importing taxon names...")
-	SQL <- paste0("SELECT *\n",
+	Query <- paste0("SELECT *\n",
 			"FROM \"", paste(taxon_names, collapse="\".\""), "\";\n")
-	species_obj$taxonNames <- dbGetQuery(conn, SQL)
+	species_obj$taxonNames <- dbGetQuery(conn, Query)
 	# Import taxon concepts
 	message("Importing taxon concepts...")
-	SQL <- paste0("SELECT *\n",
+	Query <- paste0("SELECT *\n",
 			"FROM \"", paste(taxon_relations, collapse="\".\""), "\";\n")
-	species_obj$taxonRelations <- dbGetQuery(conn, SQL)
+	species_obj$taxonRelations <- dbGetQuery(conn, Query)
 	# Link names and concepts
-	SQL <- paste0("SELECT *\n",
+	Query <- paste0("SELECT *\n",
 			"FROM \"", paste(names2concepts, collapse="\".\""), "\";\n")
-	concepts <- dbGetQuery(conn, SQL)
+	concepts <- dbGetQuery(conn, Query)
 	species_obj$taxonNames$TaxonConceptID <-
 			concepts$TaxonConceptID[match(species_obj$taxonNames$TaxonUsageID,
 							concepts$TaxonUsageID)]
@@ -67,9 +67,9 @@ db2taxlist.PostgreSQLConnection <- function(conn, taxon_names, taxon_relations,
 							match(species_obj$taxonRelations$TaxonConceptID,
 									TaxonConceptID)])
 	# Retrieve levels
-	SQL <-  paste0("SELECT *\n",
+	Query <-  paste0("SELECT *\n",
 			"FROM \"", paste(taxon_levels, collapse="\".\""), "\";\n")
-	tax_levels <- dbGetQuery(conn, SQL)
+	tax_levels <- dbGetQuery(conn, Query)
 	if(subset_levels) tax_levels <- tax_levels[tax_levels$Level %in%
 						species_obj$taxonRelations$Level,]
 	tax_levels <- tax_levels[order(tax_levels$rank),]
@@ -77,13 +77,15 @@ db2taxlist.PostgreSQLConnection <- function(conn, taxon_names, taxon_relations,
 			tax_levels$Level)
 	# Retrieve taxon traits
 	if(!missing(taxon_traits)) {
-		SQL <-  paste0("SELECT *\n",
+		Query <-  paste0("SELECT *\n",
 				"FROM \"", paste(taxon_traits, collapse="\".\""), "\";\n")
-		species_obj$taxonTraits <- dbGetQuery(conn, SQL)
+		species_obj$taxonTraits <- dbGetQuery(conn, Query)
 	} else species_obj$taxonTraits <- data.frame(TaxonConceptID=integer(0))
 	# Import taxon views
 	message("Importing taxon views...")
-	species_obj$taxonViews <- biblioDB::read_pg(conn, taxon_views)
+	# TODO: Next command may need more arguments to be set
+	species_obj$taxonViews <- biblioDB::read_pg(conn, name = taxon_views[1],
+			main_table = taxon_views[2])
 	species_obj$taxonViews <- with(species_obj, {
 				taxonViews <- taxonViews[taxonViews$bibtexkey %in%
 								taxonRelations$view_key, ]

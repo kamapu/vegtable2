@@ -43,7 +43,7 @@ insert_concept.PostgreSQLConnection <- function(conn, taxon_names,
 						"Use 'insert_synonym' instead"))
 	taxa <- db2taxlist(conn, taxon_names, taxon_relations,
 			names2concepts = names2concepts, taxon_views = taxon_views,
-			taxon_levels = taxon_levels, verbose = FALSE, ...)
+			taxon_levels = taxon_levels, ...)
 	# Reimport views
 	SQL <-  paste0("SELECT *\n",
 			"FROM \"", paste(taxon_views, collapse="\".\""), "\";\n")
