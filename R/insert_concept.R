@@ -147,7 +147,7 @@ insert_concept_swea.PostgreSQLConnection <- function(conn,
 		taxon_names = c("tax_commons", "taxonNames"),
 		taxon_relations = c("swea_dataveg", "taxonRelations"),
 		names2concepts = c("swea_dataveg", "names2concepts"),
-		taxon_views = c("commons","data_source"),
+		taxon_views = c("bib_references", "main_table"),
 		taxon_levels = c("tax_commons","taxonLevels"),
 		df, ...) {
 	insert_concept(conn, taxon_names, taxon_relations, names2concepts,
