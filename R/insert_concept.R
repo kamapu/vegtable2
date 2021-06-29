@@ -67,17 +67,19 @@ insert_concept.PostgreSQLConnection <- function(conn, taxon_names,
 						"in database."))
 	# 4: Check existence of parents in database
 	if("Parent" %in% colnames(df) &
-			!all(df$Parent %in% taxa@taxonRelations$TaxonConceptID))
+			!all(df$Parent[!is.na(df$Parent)] %in%
+							taxa@taxonRelations$TaxonConceptID))
 		stop(paste("Some entries for 'Parent' in 'df' are not",
 						"occurring in database."))
 	# 5: Check existence of levels in database
 	if("Level" %in% colnames(df) &
-			!all(paste(df$Level) %in% taxlist::levels(taxa)))
+			!all(paste(df$Level[!is.na(df$Level)]) %in% taxlist::levels(taxa)))
 		stop(paste("Some entries for 'Level' in 'df' are not",
 						"occurring in database."))
 	# 6: Check existence of view IDs in database
 	if("ViewID" %in% colnames(df) &
-			!all(paste(df$ViewID) %in% taxa@taxonViews$ViewID))
+			!all(paste(df$ViewID[!is.na(df$ViewID)]) %in%
+							taxa@taxonViews$ViewID))
 		stop(paste("Some entries for 'ViewID' in 'df' are not",
 						"occurring in database."))
 	# 7: Check consistency of levels
