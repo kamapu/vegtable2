@@ -41,16 +41,9 @@ insert_concept.PostgreSQLConnection <- function(conn, taxon_names,
 	if("TaxonConceptID" %in% colnames(df))
 		stop(paste("Column 'TaxonConceptID' detected in 'df'.",
 						"Use 'insert_synonym' instead"))
-	taxa <- db2taxlist(conn, taxon_names, taxon_relations,
-			names2concepts = names2concepts, taxon_views = taxon_views,
-			taxon_levels = taxon_levels, ...)
-	# Reimport views
-	SQL <-  paste0("SELECT *\n",
-			"FROM \"", paste(taxon_views, collapse="\".\""), "\";\n")
-	temp_views <- dbGetQuery(conn, SQL)
-	colnames(temp_views)[colnames(temp_views) ==
-					"data_source"] <- "ViewID"
-	taxa@taxonViews <- temp_views
+	suppressMessages(taxa <- db2taxlist(conn, taxon_names, taxon_relations,
+					names2concepts = names2concepts, taxon_views = taxon_views,
+					taxon_levels = taxon_levels, ...))
 	## Cross-check
 	# 1: Check duplicated combinations in 'df'
 	if(any(duplicated(df[,c("TaxonName","AuthorName")])))
@@ -77,8 +70,9 @@ insert_concept.PostgreSQLConnection <- function(conn, taxon_names,
 		stop(paste("Some entries for 'Level' in 'df' are not",
 						"occurring in database."))
 	# 6: Check existence of view IDs in database
+    # TODO: Next code may cause wrong error
 	if("ViewID" %in% colnames(df) &
-			!all(paste(df$ViewID[!is.na(df$ViewID)]) %in%
+			!all(df$ViewID[!is.na(df$ViewID)] %in%
 							taxa@taxonViews$ViewID))
 		stop(paste("Some entries for 'ViewID' in 'df' are not",
 						"occurring in database."))
