@@ -72,7 +72,7 @@ insert_concept.PostgreSQLConnection <- function(conn, taxon_names,
 		stop(paste("Some entries for 'Level' in 'df' are not",
 						"occurring in database."))
 	# 6: Check existence of view IDs in database
-    # TODO: Next code may cause wrong error
+	# TODO: Next code may cause wrong error
 	if("ViewID" %in% colnames(df) &
 			!all(df$ViewID[!is.na(df$ViewID)] %in%
 							taxa@taxonViews$ViewID))
@@ -137,7 +137,7 @@ insert_concept_swea <- function (conn, ...) {
 	UseMethod("insert_concept_swea", conn)
 }
 
-		
+
 #' @rdname insert_concept
 #' @aliases insert_concept_swea insert_concept_swea,PostgreSQLConnection-method
 #' 

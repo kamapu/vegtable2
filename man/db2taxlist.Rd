@@ -27,7 +27,7 @@ swea_tax(
   taxon_names = c("tax_commons", "taxonNames"),
   taxon_relations = c("swea_dataveg", "taxonRelations"),
   taxon_traits = c("swea_dataveg", "taxonTraits"),
-  taxon_views = "bib_references",
+  taxon_views = c("bib_references", "main_table"),
   taxon_levels = c("tax_commons", "taxonLevels"),
   names2concepts = c("swea_dataveg", "names2concepts"),
   ...
@@ -38,7 +38,7 @@ sam_tax(
   taxon_names = c("tax_commons", "taxonNames"),
   taxon_relations = c("sudamerica", "taxonRelations"),
   taxon_traits = c("sudamerica", "taxonTraits"),
-  taxon_views = c("commons", "data_source"),
+  taxon_views = c("bib_references", "main_table"),
   taxon_levels = c("tax_commons", "taxonLevels"),
   names2concepts = c("sudamerica", "names2concepts"),
   ...
