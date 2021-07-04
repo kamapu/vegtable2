@@ -22,27 +22,32 @@
 setMethod("accepted_name", signature(taxlist = "PostgreSQLConnection",
 				ConceptID = "numeric"),
 		function(taxlist, ConceptID, accepted, names2concepts, ...) {
-			# Get list of names and check
-			Query <- paste0("SELECT \"TaxonUsageID\"\n",
-					"FROM \"", paste0(names2concepts, collapse = "\".\""),
-					"\"\n",
-					"WHERE \"TaxonConceptID\" = ", ConceptID, ";\n")
-			usages <- dbGetQuery(taxlist, Query)[[1]]
-			if(!accepted %in% usages)
-				stop(paste("ID used for accepted name is not an usage name",
-								"for this concept."))
-			# Set synonyms
-			Query <- paste0("UPDATE \"", paste0(names2concepts,
-							collapse = "\".\""), "\"\n",
-					"SET \"NameStatus\" = 'synonym'\n",
-					"WHERE \"TaxonConceptID\" IN (",
-					paste0(usages[usages != accepted], collapse = ",", ");\n"))
-			dbSendQuery(taxlist, Query)
-			# Set accepted name
-			Query <- paste0("UPDATE \"", paste0(names2concepts,
-							collapse = "\".\""), "\"\n",
-					"SET \"NameStatus\" = 'accepted'\n",
-					"WHERE \"TaxonConceptID\" = ", accepted, ";\n")
-			dbSendQuery(taxlist, Query)
+			if(length(ConceptID) != length(accepted))
+				stop(paste("Arguments for 'ConceptID' and 'accepted'",
+								"have to be of identical length."))
+			for(i in 1:length(ConceptID)) {
+				Query <- paste0("SELECT *\n",
+						"FROM \"", paste0(names2concepts, collapse = "\".\""),
+						"\";\n")
+				all_n2c <- dbGetQuery(taxlist, Query)
+				if(!with(all_n2c, accepted[i] %in%
+								TaxonUsageID[TaxonConceptID == ConceptID[i]])) {
+					message(paste0("Name '", accepted[i], "' is not included",
+									" in concept '", ConceptID[i], "'"))
+				} else {
+					# TODO: It may be adapted for additional status (e.g. basionym)
+					Query <- paste0("UPDATE \"", paste0(names2concepts,
+									collapse = "\".\""),"\"\n",
+							"SET \"NameStatus\" = 'synonym'\n",
+							"WHERE \"TaxonConceptID\" = ", ConceptID[i],";\n")
+					dbSendQuery(conn, Query)
+					Query <- paste0("UPDATE \"", paste0(names2concepts,
+									collapse = "\".\""),"\"\n",
+							"SET \"NameStatus\" = 'accepted'\n",
+							"WHERE \"TaxonUsageID\" = ", accepted[i],";\n")
+					dbSendQuery(conn, Query)
+				}
+					
+			}
 			message("DONE!")
 		})
