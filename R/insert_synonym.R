@@ -63,7 +63,7 @@ insert_synonym.PostgreSQLConnection <- function(conn, taxon_names,
 							paste(df$TaxonName[i],
 									df$AuthorName[i]), "TaxonUsageID"]
 		} else {
-			usage_id <- max(db_names$TaxonUsageID) + 1
+			usage_id <- max(db_names$TaxonUsageID) + i
 			rpostgis::pgInsert(conn, taxon_names, data.frame(df[i,
 									c("TaxonName", "AuthorName")],
 							TaxonUsageID = usage_id))
