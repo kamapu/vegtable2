@@ -48,11 +48,11 @@ insert_synonym.PostgreSQLConnection <- function(conn, taxon_names,
 	if(any(duplicated(df[,c("TaxonName","AuthorName")])))
 		stop("Duplicated combinations detected in 'df'.")
 	## Extract names of database as reference
-	Query <- paste0("SELECT \"TaxonUsageID\", \"TaxonName\", \"AuthorName\"",
-			"\n", "FROM \"", paste(taxon_names, collapse="\".\""), "\";")
-	db_names <- dbGetQuery(conn, Query)
 	## Insert synonyms in a loop
 	for(i in 1:nrow(df)) {
+		Query <- paste0("SELECT \"TaxonUsageID\", \"TaxonName\", \"AuthorName\"",
+				"\n", "FROM \"", paste(taxon_names, collapse="\".\""), "\";")
+		db_names <- dbGetQuery(conn, Query)
 		if(paste(df$TaxonName[i], df$AuthorName[i]) %in%
 				paste(db_names$TaxonName, db_names$AuthorName)) {
 			message(paste0("Name '", paste(db_names$TaxonName,
@@ -63,7 +63,7 @@ insert_synonym.PostgreSQLConnection <- function(conn, taxon_names,
 							paste(df$TaxonName[i],
 									df$AuthorName[i]), "TaxonUsageID"]
 		} else {
-			usage_id <- max(db_names$TaxonUsageID) + i
+			usage_id <- max(db_names$TaxonUsageID) + 1
 			rpostgis::pgInsert(conn, taxon_names, data.frame(df[i,
 									c("TaxonName", "AuthorName")],
 							TaxonUsageID = usage_id))
@@ -72,8 +72,7 @@ insert_synonym.PostgreSQLConnection <- function(conn, taxon_names,
 						"FROM \"", paste0(names2concepts, collapse = "\".\""),
 						"\";\n"))$TaxonUsageID
 		if(usage_id %in% used_usages) {
-			message(paste0("Name '", paste(db_names$TaxonName,
-									db_names$AuthorName),
+			message(paste0("Name '", paste(df$TaxonName[i], df$AuthorName[i]),
 							"' is already in use and won't be inserted ",
 							"to the taxlist objec."))
 		} else {
