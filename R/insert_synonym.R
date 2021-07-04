@@ -55,8 +55,7 @@ insert_synonym.PostgreSQLConnection <- function(conn, taxon_names,
 		db_names <- dbGetQuery(conn, Query)
 		if(paste(df$TaxonName[i], df$AuthorName[i]) %in%
 				paste(db_names$TaxonName, db_names$AuthorName)) {
-			message(paste0("Name '", paste(db_names$TaxonName,
-									db_names$AuthorName),
+			message(paste0("Name '", paste(df$TaxonName[i], df$AuthorName[i]),
 							"' is already in database and will be recycled"))
 			usage_id <- db_names[paste(db_names$TaxonName,
 									db_names$AuthorName) ==
